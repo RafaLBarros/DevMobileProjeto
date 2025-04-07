@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    
+
+<head>
+    <script type="module" src="/js/auth-check.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Compartilhar</title>
+    
+</head>
+<body>
+    <div class="mobile-container">
+        <div class="topnav">
+            <a href="/paginas/index.html" class="active">
+                <img src="/Imagens/logo.png" id="logo"> Olá, <span id="nome-usuario-nav"></span>
+            </a>
+
+            <a href="#" class="notification">
+                <i class="fa fa-bell"></i>
+                <span class="badge">3</span>
+            </a>
+
+            <a href="javascript:void(0);" class="icon" onclick="menu()">
+                <i class="fa fa-bars"></i>
+            </a>
+
+            <div id="myLinks">
+                <a href="cadastrar_produto.html">Cadastrar Produtos</a>
+                <a href="#">Estoque</a>
+                <a href="#">Sair</a>
+            </div>
+        </div>
+
+        <!--Div de Compartilhar Lista-->
+        <div class = "divdinamica" id = "compartilhar_lista" style = "display:none">
+            <div class="container">
+                <div class="header">
+                    <a href="index.html" class="back-btn"><i class="fa fa-arrow-left"></i></a>
+                    <h2>Compartilhar Lista</h2>
+                </div>
+    
+                <label for="email_convidado">Email do Convidado:</label>
+                <input type="email" id="email_convidado" placeholder="Digite o email do convidado">
+    
+                <label for="selecionar_lista">Selecionar Lista:</label>
+                <select id="selecionar_lista">
+                    <option value="">Selecione uma lista</option>
+                    </select>
+    
+                <button id="btn_compartilhar" class="btn-login">Compartilhar</button>
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="footer">
+        <p>© 2025 GHEmpresas - Todos os direitos reservados.</p>
+    </footer>
+
+   <!-- <script type="module" src="/js/cadastrar_produto.js"></script>  -->
+    <script src = "/viewer/ViewerProduto.js"></script>
+</body>
+
+</html>

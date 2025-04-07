@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    
+
+<head>
+    <script type="module" src="/js/auth-check.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Usuario</title>
+    
+</head>
+<body>
+    <div class="mobile-container">
+        <div class="topnav">
+            <a href="/paginas/index.html" class="active">
+                <img src="/Imagens/logo.png" id="logo"> Olá, <span id="nome-usuario-nav"></span>
+            </a>
+
+            <a href="#" class="notification">
+                <i class="fa fa-bell"></i>
+                <span class="badge">3</span>
+            </a>
+
+            <a href="javascript:void(0);" class="icon" onclick="menu()">
+                <i class="fa fa-bars"></i>
+            </a>
+
+            <div id="myLinks">
+                <a href="cadastrar_produto.html">Cadastrar Produtos</a>
+                <a href="#">Estoque</a>
+                <a href="#">Sair</a>
+            </div>
+        </div>
+
+        <!--Div de Cadastrar Usuário-->
+        <div class = "divdinamica" id = "cadastrar_usuario" style = "display:none">
+            <div class="page-container">
+                <div class="mobile-container">
+                    <div style="text-align:center; margin-bottom: 20px;">
+                        <h2>Lista de Compras</h2>
+                        <p><span style="color:#B50042; font-weight:bold; font-size: 60px;">GH</span><span
+                                style="color:#5A6F59; font-weight:bold; font-size: 60px">Flusão</span></p>
+                    </div>
+        
+                    <div class="container">
+                        <form id="formCadastro">
+                            <label for="nomeCadastro">Nome</label>
+                            <input type="text" id="nomeCadastro" name="nome" required placeholder="Digite seu nome">
+        
+                            <label for="emailCadastro">E-mail</label>
+                            <input type="email" id="emailCadastro" name="email" required placeholder="Digite seu e-mail">
+        
+                            <label for="senhaCadastro">Senha</label>
+                            <input type="password" id="senhaCadastro" name="senha" required placeholder="Digite sua senha">
+        
+                            <button type="submit" class="btn-login">Cadastrar</button>
+                        </form>
+        
+                        <div style="text-align: center; margin-top: 10px;">
+                            <a href="login.html" style="color: #890334;">Já tem uma conta? Faça login</a>
+                        </div>
+        
+                        <div style="text-align: center; margin-top: 20px;">
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Div de Logar Usuário-->
+        <div class = "divdinamica" id = "logar_usuario" style = "display:none">
+            <div class="page-container">
+                <div class="mobile-container">
+                  <div style="text-align:center; margin-bottom: 20px;">
+                    <h2>Lista de Compras</h2>
+                    <p><span style="color:#B50042; font-weight:bold; font-size: 60px;">GH</span><span
+                        style="color:#5A6F59; font-weight:bold; font-size: 60px">Flusão</span></p>
+                  </div>
+            
+                  <div class="container">
+                    <form id="formLogin">
+                      <!-- <label for="emailLogin">E-mail</label>
+                      <input type="email" id="emailLogin" name="email" required>
+                      <label for="senha">Senha</label>
+                      <input type="password" id="senha" name="senha" required>
+                      <button type="submit" class="btn-login">Conectar</button> -->
+                      <label for="emailLogin">E-mail</label>
+                      <input type="email" id="emailLogin" required>
+                      <label for="senhaLogin">Senha</label>
+                      <input type="password" id="senhaLogin" required>
+                      <button type="submit" class="btn-login">Conectar</button>
+                    </form>
+            
+            
+                    <div style="text-align: center; margin-top: 10px;">
+                      <a href="register.html" style="color: #890334;">Não tem cadastro? Clique aqui!</a>
+                    </div>
+            
+                    <div style="text-align: center; margin-top: 20px;">
+                      <img src="Imagens/google-icon.png" alt="Login com Google" class="ico" onclick="loginGoogle()" style="cursor: pointer;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2025 GHEmpresas - Todos os direitos reservados.</p>
+    </footer>
+
+   <!-- <script type="module" src="/js/cadastrar_produto.js"></script>  -->
+    <script src = "/viewer/ViewerProduto.js"></script>
+</body>
+
+</html>
