@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <title>Home</title>
-  <script type="module" src="/auth-check.js"></script>
+  <!--<script type="module" src="/auth-check.js"></script>-->
 </head>
 
 <body>
@@ -41,27 +41,27 @@
 
     <!-- Container para os botões -->
     <div class="button-container">
-      <button class="btn" id = "btnCadastrarProduto" onclick="window.location.href='manter_produto.html'">
+      <button class="btn" id = "btnCadastrarProduto" onclick="window.location.href='manterProduto.html'">
         <img src="/Imagens/produtos.png" alt="Cadastrar Produtos">
         Cadastrar Produto
       </button>
-      <button class="btn" onclick="window.location.href='manter_lista.html'">
+      <button class="btn" id = "btnConsultarListas" onclick="window.location.href='manterLista.html'">
         <img src="/Imagens/verificacao.png" alt="Consultar Listas">
         Consultar Listas
       </button>
-      <button class="btn" id = "btnEstoque" onclick="window.location.href='manter_produto.html'">
+      <button class="btn" id = "btnEstoque" onclick="window.location.href='manterProduto.html'">
         <img src="/Imagens/armazem.png" alt="Estoque">
         Estoque
       </button>
-      <button class="btn">
+      <button class="btn" id = "btnRegistrarSaídas" onclick="window.location.href='manterLista.html'">
         <img src="/Imagens/teste.png" alt="Resigtrar Saídas">
         Registrar Saídas
       </button>
-      <button class="btn" onclick="window.location.href='compartilhar_lista.html'">
+      <button class="btn" id = "btnCompartilharLista" onclick="window.location.href='compartilharLista.html'">
         <img src="/Imagens/conhecimento.png" alt="Compartilhar Lista">
         Compartilhar Lista
       </button>
-      <button class="btn">
+      <button class="btn" id = "btnCopiarLista" onclick="window.location.href='copiarLista.html'">
         <img src="/Imagens/duplicado.png" alt="Copiar Lista">
         Copiar Lista
       </button>

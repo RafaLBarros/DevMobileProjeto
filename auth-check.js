@@ -22,7 +22,7 @@ window.checkAuth = function checkAuth() {
     onAuthStateChanged(auth, (user) => {
         if (!user) {
             alert("Você precisa estar logado para acessar esta página.");
-            window.location.href = "login.html"; // Redireciona para login
+            window.location.href = "manter_usuario.html"; // Redireciona para login
         } else {
             // Se o usuário está logado, atualize o nome na barra de navegação
             const nomeUsuario = localStorage.getItem("nomeUsuario");

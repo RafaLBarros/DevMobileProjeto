@@ -3,7 +3,6 @@
     
 
 <head>
-    <script type="module" src="/auth-check.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/style.css">
@@ -18,24 +17,19 @@
                 <img src="/Imagens/logo.png" id="logo"> Olá, <span id="nome-usuario-nav"></span>
             </a>
 
-            <a href="#" class="notification">
+            <a class="notification">
                 <i class="fa fa-bell"></i>
                 <span class="badge">3</span>
             </a>
 
-            <a href="javascript:void(0);" class="icon" onclick="menu()">
+            <a class="icon">
                 <i class="fa fa-bars"></i>
             </a>
 
-            <div id="myLinks">
-                <a href="cadastrar_produto.html">Cadastrar Produtos</a>
-                <a href="#">Estoque</a>
-                <a href="#">Sair</a>
-            </div>
         </div>
 
         <!--Div de Cadastrar Usuário-->
-        <div class = "divdinamica" id = "cadastrar_usuario" style = "display:none">
+        <div class = "divdinamica" id = "divCadastrarUsuario" style = "display:block">
             <div class="page-container">
                 <div class="mobile-container">
                     <div style="text-align:center; margin-bottom: 20px;">
@@ -47,19 +41,19 @@
                     <div class="container">
                         <form id="formCadastro">
                             <label for="nomeCadastro">Nome</label>
-                            <input type="text" id="nomeCadastro" name="nome" required placeholder="Digite seu nome">
+                            <input type="text" id="inputNomeUsuario" name="nome" required placeholder="Digite seu nome">
         
                             <label for="emailCadastro">E-mail</label>
-                            <input type="email" id="emailCadastro" name="email" required placeholder="Digite seu e-mail">
+                            <input type="email" id="inputEmailUsuario" name="email" required placeholder="Digite seu e-mail">
         
                             <label for="senhaCadastro">Senha</label>
-                            <input type="password" id="senhaCadastro" name="senha" required placeholder="Digite sua senha">
+                            <input type="password" id="inputSenhaUsuario" name="senha" required placeholder="Digite sua senha">
         
-                            <button type="submit" class="btn-login">Cadastrar</button>
+                            <button type="submit" id= "btnCadastrarUsuario" class="btn-login">Cadastrar</button>
                         </form>
         
                         <div style="text-align: center; margin-top: 10px;">
-                            <a href="login.html" style="color: #890334;">Já tem uma conta? Faça login</a>
+                           <!-- <a href="login.html" style="color: #890334;">Já tem uma conta? Faça login</a> -->
                         </div>
         
                         <div style="text-align: center; margin-top: 20px;">
@@ -70,7 +64,7 @@
         </div>
 
         <!--Div de Logar Usuário-->
-        <div class = "divdinamica" id = "logar_usuario" style = "display:none">
+        <div class = "divdinamica" id = "divLoginUsuario" style = "display:block">
             <div class="page-container">
                 <div class="mobile-container">
                   <div style="text-align:center; margin-bottom: 20px;">
@@ -87,19 +81,19 @@
                       <input type="password" id="senha" name="senha" required>
                       <button type="submit" class="btn-login">Conectar</button> -->
                       <label for="emailLogin">E-mail</label>
-                      <input type="email" id="emailLogin" required>
+                      <input type="email" id="inputLoginUsuario" required>
                       <label for="senhaLogin">Senha</label>
-                      <input type="password" id="senhaLogin" required>
-                      <button type="submit" class="btn-login">Conectar</button>
+                      <input type="password" id="inputSenhaUsuario" required>
+                      <button type="submit" id = "btnLoginUsuario" class="btn-login">Conectar</button>
                     </form>
             
             
                     <div style="text-align: center; margin-top: 10px;">
-                      <a href="register.html" style="color: #890334;">Não tem cadastro? Clique aqui!</a>
+                      <!-- <a href="register.html" style="color: #890334;">Não tem cadastro? Clique aqui!</a> -->
                     </div>
             
                     <div style="text-align: center; margin-top: 20px;">
-                      <img src="Imagens/google-icon.png" alt="Login com Google" class="ico" onclick="loginGoogle()" style="cursor: pointer;">
+                      <!-- <img src="Imagens/google-icon.png" alt="Login com Google" class="ico" style="cursor: pointer;"> -->
                     </div>
                   </div>
                 </div>
@@ -111,7 +105,6 @@
         <p>© 2025 GHEmpresas - Todos os direitos reservados.</p>
     </footer>
 
-   <!-- <script type="module" src="/js/cadastrar_produto.js"></script>  -->
     <script src = "/viewer/ViewerProduto.js"></script>
 </body>
 
