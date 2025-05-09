@@ -1,10 +1,21 @@
 import ModelError from "/model/ModelError.js";
 
 export default class Produto {
-    constructor(nome,quantidade,estoqueMin){
+    constructor(nome,quantidade,estoqueMin,dataCadastro){
         this.setNome(nome);
         this.setQuantidade(quantidade);
         this.setEstoqueMin(estoqueMin);
+        this.setDataCadastro(dataCadastro);
+    }
+    getProdutoId(){
+        return this.produtoId;
+    }
+    setProdutoId(produtoId){
+        Produto.validarProdutoId();
+        this.produtoId = produtoId;
+    }
+    static validarProdutoId(produtoId) {
+        return true;
     }
     getNome(){
         return this.nome;
@@ -55,5 +66,20 @@ export default class Produto {
         const padraoQuantidade = /[0-9] */;
         if (!padraoQuantidade.test(quantidade)) 
             throw new ModelError("Estoque Mínimo só pode conter números!");
+    }
+    getDataCadastro(){
+        return this.dataCadastro;
+    }
+
+    setDataCadastro(dataCadastro){
+        Produto.validarDataCadastro(dataCadastro);
+        this.dataCadastro = dataCadastro;
+    }
+    static validarDataCadastro(dataCadastro){
+        if(dataCadastro == null || dataCadastro == "" || dataCadastro == undefined)
+            throw new ModelError("A data não pode ser nula!");
+        const padraoData = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
+        if (!padraoData.test(dataCadastro)) 
+            throw new ModelError("A data não foi digitado corretamente! Ex:(01/01/2001)");
     }
 }

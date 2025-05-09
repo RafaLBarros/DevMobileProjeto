@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 
 <head>
+  <script type="module" src="/auth.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/style.css">
@@ -41,7 +42,7 @@
 
     <!-- Container para os botões -->
     <div class="button-container">
-      <button class="btn" id = "btnCadastrarProduto" onclick="window.location.href='manterProduto.html'">
+      <button class="btn" id = "btnCadastrarProduto" onclick="window.location.href='manterProduto.html#cadastro'">
         <img src="/Imagens/produtos.png" alt="Cadastrar Produtos">
         Cadastrar Produto
       </button>
@@ -49,7 +50,7 @@
         <img src="/Imagens/verificacao.png" alt="Consultar Listas">
         Consultar Listas
       </button>
-      <button class="btn" id = "btnEstoque" onclick="window.location.href='manterProduto.html'">
+      <button class="btn" id = "btnEstoque" onclick="window.location.href='manterProduto.html#estoque'">
         <img src="/Imagens/armazem.png" alt="Estoque">
         Estoque
       </button>
@@ -81,6 +82,9 @@
   <footer class="footer">
     <p>© 2025 GHEmpresas - Todos os direitos reservados.</p>
   </footer>
+  
+  <script type="module" src="/controller/CtrlSessao.js"></script>
+
 
 </body>
 

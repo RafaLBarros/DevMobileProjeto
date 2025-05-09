@@ -1,3 +1,4 @@
+import ViewerError from "/viewer/ViewerError.js";
 //------------------------------------------------------------------------//
 
 export default class ViewerManterUsuario {
@@ -5,22 +6,23 @@ export default class ViewerManterUsuario {
     #ctrl;
     
     constructor(ctrl) {
+      console.log("criei um viewerusuario");
       this.#ctrl = ctrl;
       
-      this.divCadastrarUsuario = obterElemento('divCadastrarUsuario');
-      this.divLoginUsuario = obterElemento('divLoginUsuario');
+      this.divCadastrarUsuario = this.obterElemento('divCadastrarUsuario');
+      this.divLoginUsuario = this.obterElemento('divLoginUsuario');
 
-      this.formCadastro = obterElemento('formCadastro');
-      this.formLogin = obterElemento('formLogin');
+      this.formCadastro = this.obterElemento('formCadastro');
+      this.formLogin = this.obterElemento('formLogin');
 
-      this.inputNomeUsuario = obterElemento('inputNomeUsuario');
-      this.inputEmailUsuario = obterElemento('inputEmailUsuario');
-      this.inputSenhaUsuarioCad = obterElemento('inputSenhaUsuarioCad');
-      this.inputLoginUsuario = obterElemento('inputLoginUsuario');
-      this.inputSenhaUsuarioLog = obterElemento('inputSenhaUsuarioLog');
+      this.inputNomeUsuario = this.obterElemento('inputNomeUsuario');
+      this.inputEmailUsuario = this.obterElemento('inputEmailUsuario');
+      this.inputSenhaUsuarioCad = this.obterElemento('inputSenhaUsuarioCad');
+      this.inputLoginUsuario = this.obterElemento('inputLoginUsuario');
+      this.inputSenhaUsuarioLog = this.obterElemento('inputSenhaUsuarioLog');
 
-      this.btnCadastrarUsuario = obterElemento('btnCadastrarUsuario');
-      this.btnLoginUsuario = obterElemento('btnLoginUsuario');
+      this.btnCadastrarUsuario = this.obterElemento('btnCadastrarUsuario');
+      this.btnLoginUsuario = this.obterElemento('btnLoginUsuario');
 
       this.btnCadastrarUsuario.onclick = fnBtnCadastrarUsuario;
       this.btnLoginUsuario.onclick = fnBtnLoginUsuario;
@@ -44,19 +46,33 @@ export default class ViewerManterUsuario {
     return this.#ctrl;
   }
 
+  statusLogin(){
+    this.divLoginUsuario.style.display = "block";
+    this.divCadastrarUsuario.style.display = "none";
+  }
+
+  statusCadastro(){
+    this.divLoginUsuario.style.display = "none";
+    this.divCadastrarUsuario.style.display = "block";
+  }
+
 }
 //------------------------------------------------------------------------//
 
 function fnBtnCadastrarUsuario() {
+    console.log("entrei na função de cadastrar do viewer!")
     // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
     // no botão para poder executar a instrução abaixo.
-    this.viewer.getCtrl().iniciarCadastrarUsuario();
+    const nome = this.viewer.inputNomeUsuario.value;
+    const email = this.viewer.inputEmailUsuario.value;
+    const senha = this.viewer.inputSenhaUsuarioCad.value;
+    this.viewer.getCtrl().incluir(nome,email,senha);
     
 }
 
-function fnBtnLoginUsuario() {
+function fnBtnLoginUsuario(login) {
     // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
     // no botão para poder executar a instrução abaixo.
-    this.viewer.getCtrl().iniciarLoginUsuario();
+    this.viewer.getCtrl().login();
     
 }

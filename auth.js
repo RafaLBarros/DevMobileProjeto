@@ -4,12 +4,14 @@ import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/
 
 // Your Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyA8cXYQ4m-uyEjbJJF_1_4Re8RJvqo1DWE",
-    authDomain: "dlopes-lasalle-2025.firebaseapp.com",
-    projectId: "dlopes-lasalle-2025",
-    storageBucket: "dlopes-lasalle-2025.appspot.com",
-    messagingSenderId: "91491434656",
-    appId: "1:91491434656:web:8a083bf3df35b5e18949c5",
+    apiKey: "AIzaSyAlgaQN8Oq7tsS6UhymWriTzTga1qmg-ZI",
+    authDomain: "rlb-lasalle-firebase.firebaseapp.com",
+    databaseURL: "https://rlb-lasalle-firebase-default-rtdb.firebaseio.com",
+    projectId: "rlb-lasalle-firebase",
+    storageBucket: "rlb-lasalle-firebase.firebasestorage.app",
+    messagingSenderId: "488497251520",
+    appId: "1:488497251520:web:32e3bf3f71040ef1c69925",
+    measurementId: "G-DMLGRWXSP9"
 };
 
 // Initialize Firebase
@@ -18,11 +20,11 @@ const app = initializeApp(firebaseConfig);
 // Initialize Auth
 const auth = getAuth(app);
 
-window.checkAuth = function checkAuth() {
+function checkAuth() {
     onAuthStateChanged(auth, (user) => {
         if (!user) {
             alert("Você precisa estar logado para acessar esta página.");
-            window.location.href = "manter_usuario.html"; // Redireciona para login
+            window.location.href = "manterUsuario.html#login"; // Redireciona para login
         } else {
             // Se o usuário está logado, atualize o nome na barra de navegação
             const nomeUsuario = localStorage.getItem("nomeUsuario");

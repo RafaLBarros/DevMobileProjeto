@@ -3,6 +3,7 @@
     
 
 <head>
+    <script type="module" src="/auth.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/style.css">
@@ -29,7 +30,7 @@
         </div>
 
         <!--DIV DO CADASTRO DE PRODUTO-->
-        <div class = "divdinamica" id = "divCadastrarProduto" style = "display:block">
+        <div class = "divdinamica" id = "divCadastrarProduto" style = "display:none">
             <div class="container">
                 <div class="header">
                     <a href="index.html" class="back-btn"><i class="fa fa-arrow-left"></i></a>
@@ -51,7 +52,7 @@
             </div>
         </div>
         <!--DIV DO ESTOQUE DE PRODUTOS-->
-        <div class = "divdinamica" id = "divEstoqueProduto" style = "display:block">
+        <div class = "divdinamica" id = "divEstoqueProduto" style = "display:none">
             <div class="container">
                 <div class="header">
                     <a href="/paginas/index.html" class="back-btn"><i class="fa fa-arrow-left"></i></a>
@@ -63,7 +64,7 @@
                     <button class="filter-btn" id="btnFiltrarProduto"><i class="fa fa-filter"></i></button>
                 </div>
 
-                <table class="estoque-table">
+                <table class="estoque-table" id = "tabelaEstoqueProduto">
                     <thead>
                         <tr>
                             <th>Produto</th>
@@ -81,7 +82,7 @@
         <p>© 2025 GHEmpresas - Todos os direitos reservados.</p>
     </footer>
 
-   <!-- <script type="module" src="/js/cadastrar_produto.js"></script>  -->
+    <script type="module" src="/controller/CtrlSessao.js"></script>
 </body>
 
 </html>
