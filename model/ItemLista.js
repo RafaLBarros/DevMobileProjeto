@@ -1,26 +1,29 @@
 import ModelError from "/model/ModelError.js";
 
 export default class ItemLista {
-    constructor(sequencial,quantidade,precoUnit,subtotal){
-        this.setSequencial(sequencial);
+    constructor(status,quantidade){
+        this.setStatus(status);
         this.setQuantidade(quantidade);
-        this.setPrecoUnit(precoUnit);
-        this.setSubtotal(subtotal);
     }
-    getSequencial(){
-        return this.sequencial;
+    getItemListaId(){
+        return this.itemListaId;
     }
-    setSequencial(sequencial){
-        ItemLista.validarSequencial(sequencial);
-        this.sequencial = sequencial;
+    setItemListaId(itemListaId){
+        ItemLista.validarItemListaId();
+        this.itemListaId = itemListaId;
     }
-    static validarSequencial(sequencial) {
-        if(sequencial == null || sequencial == "" || sequencial == undefined)
-          throw new ModelError("Sequencial não pode ser Nulo!");
-        const padraoSequencial = /[0-9]{3}/;
-        if (!padraoSequencial.match(sequencial)) 
-          throw new ModelError("Sequencial deve ser composto de 3 números!");
+    getStatus(){
+        return this.status;
     }
+    setStatus(status){
+        ItemLista.validarStatus(status);
+        this.status = status;
+    }
+    static validarStatus(status){
+            if(status != 'CONCLUIDO' && status != "EM ANDAMENTO") //Colocar aqui os status que quiser, coloquei esses por exemplo! : Rafael
+                throw new ModelError("Status inválido!");
+                
+        }
     getQuantidade(){
         return this.quantidade;
     }
@@ -37,20 +40,5 @@ export default class ItemLista {
         const padraoQuantidade = /[0-9] */;
         if (!padraoQuantidade.test(quantidade)) 
             throw new ModelError("Quantidade só pode conter números!");
-    }
-    getPrecoUnit(){
-        return this.precoUnit;
-    }
-
-    setPrecoUnit(precoUnit){
-        ItemLista.validarPrecoUnit(precoUnit);
-        this.precoUnit = precoUnit;
-    }
-    static validarprecoUnit(precoUnit){
-        if(precoUnit == null || precoUnit == "" || precoUnit == undefined)
-            throw new ModelError("O Preço não pode ser nulo!");
-        const padraoPrecoUnit = /[0-9]+,[0-9]/;
-        if(!padraoPrecoUnit.test(precoUnit))
-            throw new ModelError("O Preço está inválido! Ex:(10,00)")
     }
 }

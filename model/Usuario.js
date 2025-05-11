@@ -1,7 +1,8 @@
 import ModelError from "/model/ModelError.js";
 
 export default class Usuario {
-    constructor(nome,email,senha){
+    
+    constructor(nome,email,senha = "*"){
         this.setNome(nome);
         this.setEmail(email);
         this.setSenha(senha);

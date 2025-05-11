@@ -60,6 +60,7 @@ export default class ViewerManterUsuario {
 //------------------------------------------------------------------------//
 
 function fnBtnCadastrarUsuario() {
+    event.preventDefault();
     console.log("entrei na função de cadastrar do viewer!")
     // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
     // no botão para poder executar a instrução abaixo.
@@ -71,6 +72,7 @@ function fnBtnCadastrarUsuario() {
 }
 
 function fnBtnLoginUsuario(login) {
+    event.preventDefault();
     // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
     // no botão para poder executar a instrução abaixo.
     this.viewer.getCtrl().login();

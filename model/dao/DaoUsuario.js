@@ -91,7 +91,7 @@ export default class DaoUsuario {
         let usr = dataSnapshot.val();
         if(usr != null) 
           // Crio um objeto Usuario a partir do objeto JSON retornado por val().
-          resolve(new Usuario(usr.email, usr.uid, usr.funcao));
+          resolve(new Usuario(usr.nome, usr.email));
         else
           // Retorno nul se o val() também for nulo.
           resolve(null);
@@ -105,7 +105,7 @@ export default class DaoUsuario {
     createUserWithEmailAndPassword(auth, usuario.getEmail(), usuario.getSenha())
         .then((userCredential) => {
             console.log("Usuário cadastrado:", userCredential.user);
-            // Salvar o nome do usuário no Realtime Database
+            // Salvar o nome e email do usuário no Realtime Database
             const db = getDatabase();
             const userRef = ref(db, 'users/' + userCredential.user.uid);
             set(userRef, {

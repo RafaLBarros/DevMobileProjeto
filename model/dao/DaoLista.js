@@ -2,10 +2,10 @@ import { getDatabase, ref, query, onValue, onChildAdded, orderByChild,
     child, orderByKey, equalTo, get, set, remove, push, runTransaction } 
 from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 
-import Produto from "/model/Produto.js";
+import Lista from "/model/Lista.js";
 import ModelError from "/model/ModelError.js";
 
-export default class DaoProduto {
+export default class DaoLista {
     static promessaConexao = null;
     constructor() {
         this.obterConexao();
@@ -18,8 +18,8 @@ export default class DaoProduto {
   async obterConexao() {
     // Como 'promessaConexao' é um atributo estático, usamos o nome da classe 
     // para acessá-lo
-    if(DaoProduto.promessaConexao == null) {
-      DaoProduto.promessaConexao = new Promise((resolve, reject) => {
+    if(DaoLista.promessaConexao == null) {
+      DaoLista.promessaConexao = new Promise((resolve, reject) => {
         const db = getDatabase();
         if(db)
             resolve(db);
@@ -27,28 +27,28 @@ export default class DaoProduto {
             reject(new ModelError("Não foi possível estabelecer conexão com o BD"));
       });
     }
-    return DaoProduto.promessaConexao;
+    return DaoLista.promessaConexao;
   }
-  async obterProdutoPeloProdutoId(produtoId,usuario) {
+  async obterListaPeloListaId(listaId,usuario) {
     // Recuperando a conexão com o Realtime Database
     let connectionDB = await this.obterConexao();   
     // Retornamos uma Promise que nos dará o resultado
     return new Promise((resolve) => {
       // Definindo uma 'ref' para o objeto no banco de dados
-      let dbRefProduto = ref(connectionDB,'users/'+usuario.getUid()+'produto/' + produtoId );
+      let dbRefLista = ref(connectionDB,'users/'+usuario.getUid()+'listas/' + listaId );
       // Executando a consulta a partir da 'ref'
-      let consulta = query(dbRefProduto);
+      let consulta = query(dbRefLista);
       // Obtendo os dados da query. Nos devolve uma Promise
       let resultPromise = get(consulta);
       // Recuperando o resultado usando 'then'
       resultPromise.then(dataSnapshot => {
         // Pego o valor (objeto) da consulta
-        let produtoSnap = dataSnapshot.val();
+        let listaSnap = dataSnapshot.val();
         // Se há algum objeto no Firebase dado como resposta
-        if(produtoSnap != null) {
-          // Instancio um objeto Produto a partir do val()
-          resolve(new Produto(produtoSnap.nome, produtoSnap.estoque_inicial, produtoSnap.estoque_minimo, 
-                            produtoSnap.data_cadastro));
+        if(listaSnap != null) {
+          // Instancio um objeto Lista a partir do val()
+          resolve(new Lista(listaSnap.listaId, listaSnap.nome, listaSnap.estoque_inicial, listaSnap.estoque_minimo, 
+                            listaSnap.data_cadastro));
         }
         else
           resolve(null);
@@ -56,17 +56,17 @@ export default class DaoProduto {
     });
   }
 
-  async obterProdutos(usuario) {
+  async obterListas(usuario) {
     // Recuperando a conexão com o Realtime Database
     let connectionDB = await this.obterConexao();      
     // Retornamos uma Promise que nos dará o resultado
     return new Promise((resolve) => {
-      // Declaramos uma variável que referenciará o array com os objetos Produto
-      let conjProdutos = [];      
+      // Declaramos uma variável que referenciará o array com os objetos Lista
+      let conjListas = [];      
       // Definindo uma 'ref' para o objeto no banco de dados      
-      let dbRefProdutos = ref(connectionDB,'users/'+usuario.getUid()+'produtos/');
+      let dbRefLista = ref(connectionDB,'users/'+usuario.getUid()+'listas/');
       // Executo a query a partir da 'ref' definida
-      let consulta = query(dbRefProdutos);
+      let consulta = query(dbRefLista);
       // Recupero a Promise com o resultado obtido
       let resultPromise = get(consulta);
       // Com o resultado, vamos montar o array de resposta
@@ -74,78 +74,77 @@ export default class DaoProduto {
         // Para cada objeto presente no resultado
         dataSnapshot.forEach(dataSnapshotObj => {
           // Recupero o objeto com val()
-          let produtoSnap = dataSnapshotObj.val();          
-          // Instancio um objeto Produto a partir do val()
-          conjProdutos.push(new Produto(produtoSnap.produtoId, produtoSnap.nome, produtoSnap.estoque_inicial, produtoSnap.estoque_minimo, 
-            produtoSnap.data_cadastro));
+          let listaSnap = dataSnapshotObj.val();          
+          // Instancio um objeto lista a partir do val()
+          conjListas.push(new Lista(listaSnap.nome, listaSnap.data_criacao, listaSnap.status));
         });
         // Ao final do 'forEach', coloco o array como resolve da Promise a ser retornada
-        resolve(conjProdutos);
+        resolve(conjListas);
       }).catch((e) => { console.log("#ERRO: " + e); resolve([])});
     });
   }
 
-  async alterar(produto,usuario) {
+  async alterar(lista,usuario) {
     // Recuperando a conexão com o Realtime Database
     let connectionDB = await this.obterConexao();    
     // Retornamos uma Promise que nos informará se a alteração foi realizada ou não
     return new Promise( (resolve, reject) => {
-      // Monto a 'ref' para a entrada 'produtos' para a alteração
-      let dbRefProdutos = ref(connectionDB,'users/'+usuario.getUid()+'produtos/');
+      // Monto a 'ref' para a entrada 'listas' para a alteração
+      let dbRefListas = ref(connectionDB,'users/'+usuario.getUid()+'listas/');
       // Inicio uma transação
-      runTransaction(dbRefProdutos, (produtos) => {       
+      runTransaction(dbRefListas, (listas) => {       
         // Monto um child de 'cursos', onde vamos colocar a alteração do . Esse filho 
-        // de 'cursos' que é formado pela 'ref' 'cursos' (dbRefProdutos) mais a sigla 
+        // de 'cursos' que é formado pela 'ref' 'cursos' (dbReflistas) mais a sigla 
         // do novo curso
-        let dbRefProdutoAlterado = child(dbRefProdutos,produto.getProdutoId());
+        let dbRefListaAlterado = child(dbRefListas,lista.getListaId());
         // 'set' também é utilizado para alterar um objeto no Firebase a partir de seu 
         // 'ref'. Como devolve uma promise, definimos o resultado pelo 'then'
-        let setPromise = set(dbRefProdutoAlterado,produto);
+        let setPromise = set(dbRefListaAlterado,lista);
         // Definimos o resultado da operação
         setPromise.then( value => {resolve(true)}).catch((e) => {console.log("#ERRO: " + e);resolve(false);});
       });
     });
   }
 
-  async excluir(produto,usuario) {
+  async excluir(lista,usuario) {
     // Recuperando a conexão com o Realtime Database
     let connectionDB = await this.obterConexao();    
     // Retornamos uma Promise que nos informará se a exclusão foi realizada ou não
     return new Promise( (resolve, reject) => {
-      // Monto a 'ref' para a entrada 'produtos' para a exclusão
-      let dbRefProdutos = ref(connectionDB,'users/'+usuario.getUid()+'produtos/');
+      // Monto a 'ref' para a entrada 'listas' para a exclusão
+      let dbRefListas = ref(connectionDB,'users/'+usuario.getUid()+'listas/');
       // Inicio uma transação
-      runTransaction(dbRefProdutos, (produtos) => {       
-        // Monto um child de 'produtos', onde vamos promover a exclusão do produto. Esse filho 
-        // de 'produtos' que é formado pela 'ref' 'produtos' (dbRefProdutos) mais a ID do Produto
-        let dbRefExcluirProduto = child(dbRefProdutos,produto.getProdutoId());
+      runTransaction(dbRefListas, (listas) => {       
+        // Monto um child de 'listas', onde vamos promover a exclusão do lista. Esse filho 
+        // de 'listas' que é formado pela 'ref' 'listas' (dbReflistas) mais a ID do lista
+        let dbRefExcluirLista = child(dbRefListas,lista.getListaId());
         // 'remove'  é utilizado para excluir um  objeto no Firebase a partir de seu 
         // 'ref'. Como devolve uma promise, definimos o resultado pelo 'then'
-        let setPromise = remove(dbRefExcluirProduto,produto);
+        let setPromise = remove(dbRefExcluirLista,lista);
         // Definimos o resultado da operação
         setPromise.then( value => {resolve(true)}).catch((e) => {console.log("#ERRO: " + e);resolve(false);});
       });
     });
   }
 
-  async incluir(produto,usuario) {
+  async incluir(lista,usuario) {
     // Recuperando a conexão com o Realtime Database
     let connectionDB = await this.obterConexao();    
     // Retornamos uma Promise que nos informará se a inclusão foi realizada ou não
     return new Promise( (resolve, reject) => {
-      // Monto a 'ref' para a entrada 'produtos' para a inclusão
-      let dbRefProdutos = ref(connectionDB,'users/'+usuario.getUid()+'produtos/');
+      // Monto a 'ref' para a entrada 'listas' para a inclusão
+      let dbRefListas = ref(connectionDB,'users/'+usuario.getUid()+'listas/');
       // Inicio uma transação
-      runTransaction(dbRefProdutos, (produtos) => {       
-        // Monto um push de 'produtos', onde vamos pendurar o novo produto. Esse push 
-        // de 'produtos' gera o id automaticamente para usarmos como referencia
-        // para o novo produto
-        let dbRefNovoProduto = push(dbRefProdutos);
-        //Coloco a chave no objeto de produto antes
-        produto.setProdutoId(dbRefNovoProduto.key);
+      runTransaction(dbRefListas, (listas) => {       
+        // Monto um push de 'listas', onde vamos pendurar o novo lista. Esse push 
+        // de 'listas' gera o id automaticamente para usarmos como referencia
+        // para o novo lista
+        let dbRefNovoLista = push(dbRefListas);
+        //Coloco a chave no objeto de lista antes
+        lista.setlistaId(dbRefNovoLista.key);
         // 'set' é utilizado para incluir um novo objeto no Firebase a partir de seu 
         // 'ref'. Como devolve uma promise, definimos o resultado pelo 'then'
-        let setPromise = set(dbRefNovoProduto,produto);
+        let setPromise = set(dbRefNovoLista,lista);
         // Definimos o resultado da operação
         setPromise
           .then( value => {resolve(true)})

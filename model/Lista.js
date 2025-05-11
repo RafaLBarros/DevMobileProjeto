@@ -9,6 +9,13 @@ export default class Lista {
           else
             this.setStatus(status);
     }
+    getListaId(){
+        return this.listaId;
+    }
+    setListaId(listaId){
+        Lista.validarListaId();
+        this.listaId = listaId;
+    }
     getNome(){
         return this.nome;
     }
@@ -23,7 +30,7 @@ export default class Lista {
           throw new ModelError("Nome da Lista deve ter até 20 caracteres!");
         const padraoNome = /[A-Z][a-z][0-9] */;
         if (!padraoNome.test(nome)) 
-          throw new ModelError("Nome do Produto só pode conter letras e números!");
+          throw new ModelError("Nome da Lista só pode conter letras e números!");
     }
     getData(){
         return this.data;
