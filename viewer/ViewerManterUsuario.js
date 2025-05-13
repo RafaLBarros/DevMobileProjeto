@@ -24,8 +24,13 @@ export default class ViewerManterUsuario {
       this.btnCadastrarUsuario = this.obterElemento('btnCadastrarUsuario');
       this.btnLoginUsuario = this.obterElemento('btnLoginUsuario');
 
+      this.linkLogin = this.obterElemento('linkLogin');
+      this.linkCadastro = this.obterElemento('linkCadastro');
+
       this.btnCadastrarUsuario.onclick = fnBtnCadastrarUsuario;
       this.btnLoginUsuario.onclick = fnBtnLoginUsuario;
+      this.linkLogin.onclick = fnLinkLogin;
+      this.linkCadastro.onclick = fnLinkCadastro;
     }
   
   //------------------------------------------------------------------------//
@@ -75,6 +80,21 @@ function fnBtnLoginUsuario(login) {
     event.preventDefault();
     // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
     // no botão para poder executar a instrução abaixo.
-    this.viewer.getCtrl().login();
+    const email = this.viewer.inputLoginUsuario.value;
+    const senha = this.viewer.inputSenhaUsuarioLog.value;
+    this.viewer.getCtrl().login(email,senha);
+    
+}
+
+function fnLinkLogin() {
+    location.href = 'manterUsuario.html#login';
+    this.viewer.getCtrl().setAcao('login');
+    this.viewer.statusLogin();
+    
+}
+function fnLinkCadastro() {
+    location.href = 'manterUsuario.html#registro';
+    this.viewer.getCtrl().setAcao('registro');
+    this.viewer.statusCadastro();
     
 }

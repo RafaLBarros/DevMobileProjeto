@@ -532,3 +532,9 @@ tbody tr:nth-child(even) {
 .btn-login:hover {
     background-color: #5e0226;
 }
+
+.redirect-link:hover {
+  text-decoration: underline;
+  color: #5e0226;
+  cursor: pointer;
+}

@@ -9,7 +9,7 @@ import { getDatabase, ref, query, onValue, onChildAdded, orderByChild,
         child, orderByKey, equalTo, get, set, remove, push, runTransaction } 
   from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 // Importamos a definição da classe Usuario
 import Usuario from "/model/Usuario.js";
