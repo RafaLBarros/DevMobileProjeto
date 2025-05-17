@@ -28,7 +28,7 @@
         </div>
 
         <!--Div de Cadastrar Lista-->
-        <div class = "divdinamica" id = "divCadastrarLista" style = "display:block">
+        <div class = "divdinamica" id = "divCadastrarLista" style = "display:none">
             <div class="container">
                 <div class="header">
                     <a href="index.html" class="back-btn"><i class="fa fa-arrow-left"></i></a>
@@ -38,7 +38,7 @@
                 <label for="nome_lista">Nome da Lista:</label>
                 <input type="text" id="inputNomeLista" placeholder="Digite o nome da lista">
 
-                <table class="lista-table">
+                <table class="lista-table" id = tableItemLista>
                     <thead>
                         <tr>
                             <th class="item-column">Produto</th>
@@ -46,7 +46,7 @@
                             <th>Ações</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id = tbodyItemLista>
                         </tbody>
                 </table>
 
@@ -57,7 +57,7 @@
         </div>
 
         <!--Div de Consultar/Atualizar Lista-->
-        <div class = "divdinamica" id = "divConsultarLista" style = "display:block">
+        <div class = "divdinamica" id = "divConsultarLista" style = "display:none">
             <div class="container">
                 <div class="header">
                     <a href="index.html" class="back-btn"><i class="fa fa-arrow-left"></i></a>
@@ -79,7 +79,7 @@
                 <div id="novoProdutoForm" style="display:block">
                     <h3>Adicionar Novo Produto</h3>
                     <label for="selecionarProduto">Produto:</label>
-                    <select id="selecionarProduto"></select>
+                    <select id="selecionarProduto" class = "select-produto"></select>
                     <label for="quantidadeInput">Quantidade:</label>
                     <input type="number" id="inputQuantidade" value="1">
                     <button id="btnAdicionarItemCon">Adicionar Item</button>
@@ -93,7 +93,7 @@
         <p>© 2025 GHEmpresas - Todos os direitos reservados.</p>
     </footer>
 
-   <!-- <script type="module" src="/js/cadastrar_produto.js"></script>  --> <!-- AQUI SERA ADICIONADO O SCRIPT DO CTRL SESSÃO-->
+    <script type="module" src="/controller/CtrlSessao.js"></script>
 </body>
 
 </html>

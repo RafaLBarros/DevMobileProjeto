@@ -73,6 +73,7 @@ export default class CtrlManterUsuario{
       const usuario = await this.#dao.obterUsuarioPeloUID(uid);
       if(usuario) {
         localStorage.setItem("nomeUsuario",usuario.getNome());
+        localStorage.setItem("uid",uid);
         window.location.href = 'index.html'; // Redireciona após login
       }else {
         alert("Usuário não encontrado no banco!")

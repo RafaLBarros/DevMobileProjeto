@@ -1,4 +1,5 @@
 import ViewerError from "/viewer/ViewerError.js";
+import Produto from "/model/Produto.js";
 //------------------------------------------------------------------------//
 
 export default class ViewerManterProduto {
@@ -49,10 +50,11 @@ export default class ViewerManterProduto {
   }
 
   statusApresentacao(conjProdutos) {
+    location.href = 'manterProduto.html#estoque';
     this.divEstoqueProduto.style.display = 'block';
     this.divCadastrarProduto.style.display = 'none';
     this.tabelaEstoqueProduto.innerHTML = '';
-    for(const produto in conjProdutos){
+    for(let produto of conjProdutos){
       const row = `
       <tr>
           <td>${produto.getNome()}</td>
@@ -63,6 +65,7 @@ export default class ViewerManterProduto {
     }
   }
   statusInclusao() {
+    location.href = 'manterProduto.html#cadastro';
     this.divEstoqueProduto.style.display = 'none';
     this.divCadastrarProduto.style.display = 'block';
 
@@ -74,15 +77,16 @@ export default class ViewerManterProduto {
 //------------------------------------------------------------------------//
 
 function fnBtnCadastrarProduto() {
+    event.preventDefault();
     const nome = this.viewer.inputNomeProduto.value;
-    const quantidade = this.viewer.inputNomeProduto.value;
-    const estoqueMinimo = this.viewer.inputNomeProduto.value;
-    const dataCadastro = new Date().toISOString();
-    this.viewer.getCtrl().incluir(nome,quantidade,estoqueMinimo,dataCadastro); 
+    const quantidade = this.viewer.inputEstoqueProduto.value;
+    const estoqueMinimo = this.viewer.inputMinimoProduto.value;
+    this.viewer.getCtrl().incluir(nome,quantidade,estoqueMinimo); 
     
 }
 
 function fnBtnFiltrarProduto() {
+    event.preventDefault();
     // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
     // no botão para poder executar a instrução abaixo.
     this.viewer.getCtrl().iniciarFiltrarProduto();

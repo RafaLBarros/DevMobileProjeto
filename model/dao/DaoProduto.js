@@ -29,13 +29,13 @@ export default class DaoProduto {
     }
     return DaoProduto.promessaConexao;
   }
-  async obterProdutoPeloProdutoId(produtoId,usuario) {
+  async obterProdutoPeloProdutoId(produtoId,usuarioUid) {
     // Recuperando a conexão com o Realtime Database
     let connectionDB = await this.obterConexao();   
     // Retornamos uma Promise que nos dará o resultado
     return new Promise((resolve) => {
       // Definindo uma 'ref' para o objeto no banco de dados
-      let dbRefProduto = ref(connectionDB,'users/'+usuario.getUid()+'produto/' + produtoId );
+      let dbRefProduto = ref(connectionDB,`users/${usuarioUid}/produtos/${produtoId}`);
       // Executando a consulta a partir da 'ref'
       let consulta = query(dbRefProduto);
       // Obtendo os dados da query. Nos devolve uma Promise
@@ -47,8 +47,10 @@ export default class DaoProduto {
         // Se há algum objeto no Firebase dado como resposta
         if(produtoSnap != null) {
           // Instancio um objeto Produto a partir do val()
-          resolve(new Produto(produtoSnap.nome, produtoSnap.estoque_inicial, produtoSnap.estoque_minimo, 
-                            produtoSnap.data_cadastro));
+          let produto = new Produto(produtoSnap.nome, produtoSnap.quantidade, produtoSnap.estoqueMin, 
+            produtoSnap.dataCadastro);
+          produto.setProdutoId(dataSnapshot.key);
+          resolve(produto);
         }
         else
           resolve(null);
@@ -56,7 +58,7 @@ export default class DaoProduto {
     });
   }
 
-  async obterProdutos(usuario) {
+  async obterProdutos(usuarioUid) {
     // Recuperando a conexão com o Realtime Database
     let connectionDB = await this.obterConexao();      
     // Retornamos uma Promise que nos dará o resultado
@@ -64,7 +66,8 @@ export default class DaoProduto {
       // Declaramos uma variável que referenciará o array com os objetos Produto
       let conjProdutos = [];      
       // Definindo uma 'ref' para o objeto no banco de dados      
-      let dbRefProdutos = ref(connectionDB,'users/'+usuario.getUid()+'produtos/');
+      let dbRefProdutos = ref(connectionDB,`users/${usuarioUid}/produtos`);
+      console.log(`users/${usuarioUid}/produtos`);
       // Executo a query a partir da 'ref' definida
       let consulta = query(dbRefProdutos);
       // Recupero a Promise com o resultado obtido
@@ -73,11 +76,14 @@ export default class DaoProduto {
       resultPromise.then(dataSnapshot => {
         // Para cada objeto presente no resultado
         dataSnapshot.forEach(dataSnapshotObj => {
-          // Recupero o objeto com val()
-          let produtoSnap = dataSnapshotObj.val();          
+          // Recupero o objeto com val() 
+          let produtoSnap = dataSnapshotObj.val();     
           // Instancio um objeto Produto a partir do val()
-          conjProdutos.push(new Produto(produtoSnap.produtoId, produtoSnap.nome, produtoSnap.estoque_inicial, produtoSnap.estoque_minimo, 
-            produtoSnap.data_cadastro));
+          let produto = new Produto(produtoSnap.nome, produtoSnap.quantidade, produtoSnap.estoqueMin, 
+            produtoSnap.dataCadastro);
+          produto.setProdutoId(dataSnapshotObj.key);
+          conjProdutos.push(produto);
+          console.log("Dei Push nos produtos");
         });
         // Ao final do 'forEach', coloco o array como resolve da Promise a ser retornada
         resolve(conjProdutos);
@@ -85,13 +91,13 @@ export default class DaoProduto {
     });
   }
 
-  async alterar(produto,usuario) {
+  async alterar(produto,usuarioUid) {
     // Recuperando a conexão com o Realtime Database
     let connectionDB = await this.obterConexao();    
     // Retornamos uma Promise que nos informará se a alteração foi realizada ou não
     return new Promise( (resolve, reject) => {
       // Monto a 'ref' para a entrada 'produtos' para a alteração
-      let dbRefProdutos = ref(connectionDB,'users/'+usuario.getUid()+'produtos/');
+      let dbRefProdutos = ref(connectionDB,`users/${usuarioUid}/produtos`);
       // Inicio uma transação
       runTransaction(dbRefProdutos, (produtos) => {       
         // Monto um child de 'cursos', onde vamos colocar a alteração do . Esse filho 
@@ -107,13 +113,13 @@ export default class DaoProduto {
     });
   }
 
-  async excluir(produto,usuario) {
+  async excluir(produto,usuarioUid) {
     // Recuperando a conexão com o Realtime Database
     let connectionDB = await this.obterConexao();    
     // Retornamos uma Promise que nos informará se a exclusão foi realizada ou não
     return new Promise( (resolve, reject) => {
       // Monto a 'ref' para a entrada 'produtos' para a exclusão
-      let dbRefProdutos = ref(connectionDB,'users/'+usuario.getUid()+'produtos/');
+      let dbRefProdutos = ref(connectionDB,`users/${usuarioUid}/produtos`);
       // Inicio uma transação
       runTransaction(dbRefProdutos, (produtos) => {       
         // Monto um child de 'produtos', onde vamos promover a exclusão do produto. Esse filho 
@@ -128,13 +134,13 @@ export default class DaoProduto {
     });
   }
 
-  async incluir(produto,usuario) {
+  async incluir(produto,usuarioUid) {
     // Recuperando a conexão com o Realtime Database
     let connectionDB = await this.obterConexao();    
     // Retornamos uma Promise que nos informará se a inclusão foi realizada ou não
     return new Promise( (resolve, reject) => {
       // Monto a 'ref' para a entrada 'produtos' para a inclusão
-      let dbRefProdutos = ref(connectionDB,'users/'+usuario.getUid()+'produtos/');
+      let dbRefProdutos = ref(connectionDB,`users/${usuarioUid}/produtos`);
       // Inicio uma transação
       runTransaction(dbRefProdutos, (produtos) => {       
         // Monto um push de 'produtos', onde vamos pendurar o novo produto. Esse push 
@@ -146,6 +152,8 @@ export default class DaoProduto {
         // 'set' é utilizado para incluir um novo objeto no Firebase a partir de seu 
         // 'ref'. Como devolve uma promise, definimos o resultado pelo 'then'
         let setPromise = set(dbRefNovoProduto,produto);
+        console.log("Produto cadastrado com ID:", dbRefNovoProduto.key);
+        alert("Produto cadastrado com sucesso!");
         // Definimos o resultado da operação
         setPromise
           .then( value => {resolve(true)})

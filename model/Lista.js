@@ -1,7 +1,8 @@
 import ModelError from "/model/ModelError.js";
 
 export default class Lista {
-    constructor(nome,data,status){
+    constructor(nome,data,itens,status){
+        this.setItens(itens);
         this.setNome(nome);
         this.setData(data);
         if(status === undefined || status === null)
@@ -16,6 +17,19 @@ export default class Lista {
         Lista.validarListaId();
         this.listaId = listaId;
     }
+    static validarListaId(listaId) {
+        return true;
+    }
+    getItens(){
+        return this.itens;
+    }
+    setItens(itens){
+        Lista.validarItens();
+        this.itens = itens;
+    }
+    static validarItens(itens) {
+        return true;
+    }
     getNome(){
         return this.nome;
     }
@@ -26,9 +40,9 @@ export default class Lista {
     static validarNome(nome) {
         if(nome == null || nome == "" || nome == undefined)
           throw new ModelError("Nome da Lista não pode ser Nulo!");
-        if (nome.length > 20) 
+        if (nome.length > 32) 
           throw new ModelError("Nome da Lista deve ter até 20 caracteres!");
-        const padraoNome = /[A-Z][a-z][0-9] */;
+        const padraoNome = /^[\p{L}0-9\s\-\/]+$/u;
         if (!padraoNome.test(nome)) 
           throw new ModelError("Nome da Lista só pode conter letras e números!");
     }
@@ -56,8 +70,10 @@ export default class Lista {
         this.status = status;
     }
     static validarStatus(status){
-        if(status != 'CRIADA' && status != "EM ANDAMENTO" && status != 'FINALIZADA') //Colocar aqui os status que quiser, coloquei esses por exemplo! : Rafael
+        if(status != 'criada' && status != "em andamento" && status != 'finalizada') //Colocar aqui os status que quiser, coloquei esses por exemplo! : Rafael
             throw new ModelError("Status inválido!");
             
     }
+
+    
 }

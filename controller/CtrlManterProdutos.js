@@ -16,7 +16,8 @@ export default class CtrlManterProdutos {
 
     async #atualizarContextoNavegacao(){
         if(this.#status == Status.NAVEGANDO){
-            let conjProdutos = await this.#dao.obterProdutos();
+            let uid = localStorage.getItem("uid");
+            let conjProdutos = await this.#dao.obterProdutos(uid);
             this.#viewer.statusApresentacao(conjProdutos);
         }else if(this.#status == Status.INCLUINDO){
             this.#viewer.statusInclusao();
@@ -24,11 +25,13 @@ export default class CtrlManterProdutos {
     }
 
 
-    async incluir(nome,quantidade,estoqueMin,dataCadastro) {
+    async incluir(nome,quantidade,estoqueMin) {
         if(this.#status == Status.INCLUINDO) {
           try {
+            let uid = localStorage.getItem("uid");
+            let dataCadastro = new Date().toLocaleDateString('pt-BR');
             let produto = new Produto(nome, quantidade,estoqueMin,dataCadastro);
-            await this.#dao.incluir(produto); 
+            await this.#dao.incluir(produto,uid); 
             this.#status = Status.NAVEGANDO;
             this.#atualizarContextoNavegacao();
           }

@@ -29,13 +29,13 @@ export default class DaoLista {
     }
     return DaoLista.promessaConexao;
   }
-  async obterListaPeloListaId(listaId,usuario) {
+  async obterListaPeloListaId(listaId,usuarioUid) {
     // Recuperando a conexão com o Realtime Database
     let connectionDB = await this.obterConexao();   
     // Retornamos uma Promise que nos dará o resultado
     return new Promise((resolve) => {
       // Definindo uma 'ref' para o objeto no banco de dados
-      let dbRefLista = ref(connectionDB,'users/'+usuario.getUid()+'listas/' + listaId );
+      let dbRefLista = ref(connectionDB,`users/${usuarioUid}/listas/${listaId}`);
       // Executando a consulta a partir da 'ref'
       let consulta = query(dbRefLista);
       // Obtendo os dados da query. Nos devolve uma Promise
@@ -47,8 +47,9 @@ export default class DaoLista {
         // Se há algum objeto no Firebase dado como resposta
         if(listaSnap != null) {
           // Instancio um objeto Lista a partir do val()
-          resolve(new Lista(listaSnap.listaId, listaSnap.nome, listaSnap.estoque_inicial, listaSnap.estoque_minimo, 
-                            listaSnap.data_cadastro));
+          let lista = new Lista(listaSnap.nome, listaSnap.data, listaSnap.itens, listaSnap.status)
+          lista.setListaId(dataSnapshot.key)
+          resolve(lista);
         }
         else
           resolve(null);
@@ -56,7 +57,7 @@ export default class DaoLista {
     });
   }
 
-  async obterListas(usuario) {
+  async obterListas(usuarioUid) {
     // Recuperando a conexão com o Realtime Database
     let connectionDB = await this.obterConexao();      
     // Retornamos uma Promise que nos dará o resultado
@@ -64,7 +65,7 @@ export default class DaoLista {
       // Declaramos uma variável que referenciará o array com os objetos Lista
       let conjListas = [];      
       // Definindo uma 'ref' para o objeto no banco de dados      
-      let dbRefLista = ref(connectionDB,'users/'+usuario.getUid()+'listas/');
+      let dbRefLista = ref(connectionDB,`users/${usuarioUid}/listas`);
       // Executo a query a partir da 'ref' definida
       let consulta = query(dbRefLista);
       // Recupero a Promise com o resultado obtido
@@ -76,7 +77,9 @@ export default class DaoLista {
           // Recupero o objeto com val()
           let listaSnap = dataSnapshotObj.val();          
           // Instancio um objeto lista a partir do val()
-          conjListas.push(new Lista(listaSnap.nome, listaSnap.data_criacao, listaSnap.status));
+          let lista = new Lista(listaSnap.nome, listaSnap.data, listaSnap.itens, listaSnap.status)
+          lista.setListaId(dataSnapshotObj.key)
+          conjListas.push(lista);
         });
         // Ao final do 'forEach', coloco o array como resolve da Promise a ser retornada
         resolve(conjListas);
@@ -127,13 +130,13 @@ export default class DaoLista {
     });
   }
 
-  async incluir(lista,usuario) {
+  async incluir(lista,usuarioUid) {
     // Recuperando a conexão com o Realtime Database
     let connectionDB = await this.obterConexao();    
     // Retornamos uma Promise que nos informará se a inclusão foi realizada ou não
     return new Promise( (resolve, reject) => {
       // Monto a 'ref' para a entrada 'listas' para a inclusão
-      let dbRefListas = ref(connectionDB,'users/'+usuario.getUid()+'listas/');
+      let dbRefListas = ref(connectionDB,`users/${usuarioUid}/listas`);
       // Inicio uma transação
       runTransaction(dbRefListas, (listas) => {       
         // Monto um push de 'listas', onde vamos pendurar o novo lista. Esse push 
@@ -141,7 +144,7 @@ export default class DaoLista {
         // para o novo lista
         let dbRefNovoLista = push(dbRefListas);
         //Coloco a chave no objeto de lista antes
-        lista.setlistaId(dbRefNovoLista.key);
+        lista.setListaId(dbRefNovoLista.key);
         // 'set' é utilizado para incluir um novo objeto no Firebase a partir de seu 
         // 'ref'. Como devolve uma promise, definimos o resultado pelo 'then'
         let setPromise = set(dbRefNovoLista,lista);

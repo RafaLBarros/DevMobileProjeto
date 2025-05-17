@@ -47,7 +47,7 @@ export default class Usuario {
           throw new ModelError("Seu nome não pode ser nulo!");
         if (nome.length > 40) 
           throw new ModelError("Seu nome deve ter até 40 caracteres!");
-        const padraoNome = /^[a-zA-Z]+$/;
+        const padraoNome = /^[\p{L} '\u2019]+$/u;
         if (!padraoNome.test(nome)) 
           throw new ModelError("Seu nome só pode conter letras!");
     }

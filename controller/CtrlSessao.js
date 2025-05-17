@@ -7,6 +7,7 @@ import { getDatabase, ref, query, onValue, onChildAdded, orderByChild, orderByKe
 import CtrlManterProdutos from "/controller/CtrlManterProdutos.js";
 import Status from "/model/Status.js";
 import CtrlManterUsuario from "/controller/CtrlManterUsuario.js"
+import CtrlManterListas from "/controller/CtrlManterListas.js"
 
 const swal = new Function("json,th", "swal(json).then(th)");
 
@@ -42,20 +43,22 @@ export default class CtrlSessao {
       // abrir esse arquivo para alteração. O melhor seria implementar um 
       // mecanismo de INJEÇÃO DE DEPENDÊNCIA.     
       if(document.URL.includes("manterProduto.html#estoque")){
-        console.log("entrei estoque e criei novo ctrl atual");
         this.ctrlAtual = new CtrlManterProdutos(Status.NAVEGANDO);
       }
       else if(document.URL.includes("manterProduto.html#cadastro")){
-        console.log("entrei cadastro e criei novo ctrl atual");
         this.ctrlAtual = new CtrlManterProdutos(Status.INCLUINDO);
       }
       else if(document.URL.includes("manterUsuario.html#login")){
-        console.log("entrei no login e criei novo ctrl atual");
         this.ctrlAtual = new CtrlManterUsuario('login');
       }
       else if(document.URL.includes("manterUsuario.html#registro")){
-        console.log("entrei no registro e criei novo ctrl atual");
         this.ctrlAtual = new CtrlManterUsuario('registro');
+      }
+      else if(document.URL.includes("manterLista.html#init")){
+        this.ctrlAtual = new CtrlManterListas(Status.NAVEGANDO);
+      }
+      else if(document.URL.includes("manterLista.html#cadastro")){
+        this.ctrlAtual = new CtrlManterListas(Status.INCLUINDO);
       }
     } catch(e) {
       alert(e);
