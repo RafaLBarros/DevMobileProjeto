@@ -31,7 +31,7 @@ export default class Produto {
           throw new ModelError("Nome do Produto deve ter até 20 caracteres!");
         const padraoNome = /^[A-Za-zÀ-ÖØ-öø-ÿÇç\s]+$/;
         if (!padraoNome.test(nome)) 
-          throw new ModelError("Nome do Produto só pode conter letras!");
+          throw new ModelError("Nome do Produto Inválido");
     }
     getQuantidade(){
         return this.quantidade;
@@ -48,7 +48,7 @@ export default class Produto {
             throw new ModelError("A quantidade deve ser no mínimo 0!");
         const padraoQuantidade = /^[0-9]+$/;
         if (!padraoQuantidade.test(quantidade)) 
-            throw new ModelError("Quantidade só pode conter números!");
+            throw new ModelError("Quantidade Inválida!");
     }
     getEstoqueMin(){
         return this.estoqueMin;
@@ -66,7 +66,7 @@ export default class Produto {
             throw new ModelError("O Estoque Mínimo deve ser no mínimo 0!");
         const padraoEstoqueMin = /^[0-9]+$/;
         if (!padraoEstoqueMin.test(estoqueMin)) 
-            throw new ModelError("Estoque Mínimo só pode conter números!");
+            throw new ModelError("Estoque Mínimo Inválido!");
     }
     getDataCadastro(){
         return this.dataCadastro;

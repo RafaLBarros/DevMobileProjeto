@@ -70,10 +70,32 @@ export default class ViewerManterProduto {
       <tr>
           <td>${produto.getNome()}</td>
           <td>${produto.getQuantidade()}</td>
+          <td>
+<button
+  class="btn-remover" 
+  data-prodid="${produto.getProdutoId()}"
+  style="
+    border: none !important;
+    background: transparent !important;
+    padding: 0;
+    cursor: pointer;
+  "
+>
+  <img src="/Imagens/lixo.png" alt="Remover" style="width:20px;height:20px;">
+</button>
+          </td>
       </tr>
       `;
       this.tabelaEstoqueProduto.innerHTML += row;
     }
+    this.tabelaEstoqueProduto.querySelectorAll(".btn-remover").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const produtoId = btn.dataset.prodid;
+        if (confirm("Deseja realmente remover este produto?")) {
+          this.getCtrl().removerProduto(produtoId);
+        }
+      });
+    });
   }
   statusInclusao() {
     location.href = '/paginas/manterProduto.html#cadastro';
@@ -148,6 +170,12 @@ function fnSelectSaidaProduto() {
 }
 
 function fnBtnRegistrarSaida() {
+  event.preventDefault();
+  let produtoId = this.viewer.selectSaidaProduto.value;
+  let quantidade = parseInt(this.viewer.inputQuantidadeSaida.value);
+  this.viewer.getCtrl().iniciarRegistrarSaida(produtoId,quantidade);
+}
+function fnBtnRemoverProduto() {
   event.preventDefault();
   let produtoId = this.viewer.selectSaidaProduto.value;
   let quantidade = parseInt(this.viewer.inputQuantidadeSaida.value);

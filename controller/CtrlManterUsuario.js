@@ -74,7 +74,7 @@ export default class CtrlManterUsuario{
       if(usuario) {
         localStorage.setItem("nomeUsuario",usuario.getNome());
         localStorage.setItem("uid",uid);
-        window.location.href = 'index.html'; // Redireciona após login
+        window.location.href = '/index.html'; // Redireciona após login
       }else {
         alert("Usuário não encontrado no banco!")
       }

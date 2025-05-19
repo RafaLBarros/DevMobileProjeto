@@ -26,33 +26,33 @@ export default class CtrlSessao {
       // precisarmos acrescentar um novo controlador de caso de uso, precisaremos
       // abrir esse arquivo para alteração. O melhor seria implementar um 
       // mecanismo de INJEÇÃO DE DEPENDÊNCIA.     
-      if(location.pathname.endsWith("manterProduto.html") && location.hash === "#estoque"){
+      if(location.pathname.endsWith("/paginas/manterProduto.html") && location.hash === "#estoque"){
         console.log("Executando status");
         this.ctrlAtual = new CtrlManterProdutos(Status.NAVEGANDO);
       }
-      else if(location.pathname.endsWith("manterProduto.html") && location.hash === "#cadastro"){
+      else if(location.pathname.endsWith("/paginas/manterProduto.html") && location.hash === "#cadastro"){
         console.log("Executando status");
         this.ctrlAtual = new CtrlManterProdutos(Status.INCLUINDO);
       }
-      else if(document.URL.includes("manterUsuario.html#login")){
+      else if(document.URL.includes("/paginas/manterUsuario.html#login")){
         this.ctrlAtual = new CtrlManterUsuario('login');
       }
-      else if(document.URL.includes("manterUsuario.html#registro")){
+      else if(document.URL.includes("/paginas/manterUsuario.html#registro")){
         this.ctrlAtual = new CtrlManterUsuario('registro');
       }
-      else if(document.URL.includes("manterLista.html#init")){
+      else if(document.URL.includes("/paginas/manterLista.html#init")){
         this.ctrlAtual = new CtrlManterListas(Status.NAVEGANDO);
       }
-      else if(document.URL.includes("manterLista.html#cadastro")){
+      else if(document.URL.includes("/paginas/manterLista.html#cadastro")){
         this.ctrlAtual = new CtrlManterListas(Status.INCLUINDO);
       }
-      else if(location.pathname.endsWith("manterProduto.html") && location.hash === "#saida"){
+      else if(location.pathname.endsWith("/paginas/manterProduto.html") && location.hash === "#saida"){
         this.ctrlAtual = new CtrlManterProdutos(Status.EXCLUINDO);
-      }else if(document.URL.includes("copiarLista.html")){
+      }else if(document.URL.includes("/paginas/copiarLista.html")){
         this.ctrlAtual = new CtrlCopiarListas();
-      }else if(document.URL.includes("compartilharLista.html#compartilhar")){
+      }else if(document.URL.includes("/paginas/compartilharLista.html#compartilhar")){
         this.ctrlAtual = new CtrlCompartilharListas("compartilhando");
-      }else if(document.URL.includes("compartilharLista.html#convidado")){
+      }else if(document.URL.includes("/paginas/compartilharLista.html#convidado")){
         this.ctrlAtual = new CtrlCompartilharListas("visualizando");
       }
     } catch(e) {
