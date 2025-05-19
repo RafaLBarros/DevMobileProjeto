@@ -60,7 +60,7 @@ export default class ViewerManterProduto {
 
   statusApresentacao(conjProdutos) {
     this.ocultarTodasAsDivs();
-    location.href = 'manterProduto.html#estoque';
+    location.href = '/paginas/manterProduto.html#estoque';
     this.divEstoqueProduto.style.display = 'block';
     this.divCadastrarProduto.style.display = 'none';
     this.divSaidaProduto.style.display = 'none';
@@ -76,7 +76,7 @@ export default class ViewerManterProduto {
     }
   }
   statusInclusao() {
-    location.href = 'manterProduto.html#cadastro';
+    location.href = '/paginas/manterProduto.html#cadastro';
     this.divEstoqueProduto.style.display = 'none';
     this.divCadastrarProduto.style.display = 'block';
     this.divSaidaProduto.style.display = 'none';
@@ -85,7 +85,7 @@ export default class ViewerManterProduto {
 
   statusExclusao(conjProdutos){
     this.ocultarTodasAsDivs();
-    location.href = 'manterProduto.html#saida';
+    location.href = '/paginas/manterProduto.html#saida';
     this.divEstoqueProduto.style.display = 'none';
     this.divCadastrarProduto.style.display = 'none';
     this.divSaidaProduto.style.display = 'block';

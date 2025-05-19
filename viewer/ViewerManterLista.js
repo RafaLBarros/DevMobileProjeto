@@ -81,7 +81,7 @@ export default class ViewerManterLista {
   }
 
   statusApresentacao(conjListas) {
-    location.href = 'manterLista.html#init';
+    location.href = '/paginas/manterLista.html#init';
     this.divConsultarLista.style.display = 'block';
     this.divCadastrarLista.style.display = 'none';
     this.selectConsultarLista.innerHTML = `<option value="">Selecione uma lista</option>`;
@@ -94,7 +94,7 @@ export default class ViewerManterLista {
     }
   }  
   statusInclusao() {
-    location.href = 'manterLista.html#cadastro';
+    location.href = '/paginas/manterLista.html#cadastro';
     this.divConsultarLista.style.display = 'none';
     this.divCadastrarLista.style.display = 'block';
 

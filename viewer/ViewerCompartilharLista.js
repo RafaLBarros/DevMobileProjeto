@@ -44,7 +44,7 @@ export default class ViewerCompartilharLista {
   }
 
   statusCompartilhar(conjListas){
-    location.href = 'compartilharLista.html#compartilhar';
+    location.href = '/paginas/compartilharLista.html#compartilhar';
     this.divListasConvidado.style.display = 'none';
     this.divCompartilharLista.style.display = 'block';
     this.selectLista.innerHTML = "<option value=''>Selecione uma lista</option>";
@@ -66,7 +66,7 @@ export default class ViewerCompartilharLista {
   }
   
   carregarListasCompartilhadas(listas){
-    location.href = 'compartilharLista.html#convidado';
+    location.href = '/paginas/compartilharLista.html#convidado';
     this.divCompartilharLista.style.display = 'none';
     this.divListasConvidado.style.display = 'block';
     this.selectListaConvidado.innerHTML = `<option value="">Selecione uma lista</option>`;

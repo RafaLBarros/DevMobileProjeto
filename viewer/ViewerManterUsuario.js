@@ -87,13 +87,13 @@ function fnBtnLoginUsuario(login) {
 }
 
 function fnLinkLogin() {
-    location.href = 'manterUsuario.html#login';
+    location.href = '/paginas/manterUsuario.html#login';
     this.viewer.getCtrl().setAcao('login');
     this.viewer.statusLogin();
     
 }
 function fnLinkCadastro() {
-    location.href = 'manterUsuario.html#registro';
+    location.href = '/paginas/manterUsuario.html#registro';
     this.viewer.getCtrl().setAcao('registro');
     this.viewer.statusCadastro();
     
