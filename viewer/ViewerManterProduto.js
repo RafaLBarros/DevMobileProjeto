@@ -103,11 +103,12 @@ export default class ViewerManterProduto {
   }
 
   async exibirQuantidadeDisponivel(produtoId){
+    this.spanQuantidadeDisponivel.textContent = `Disponível: `;
     let quantidade = await this.#ctrl.obterQuantidadeAtual(produtoId);
     if(quantidade){
       this.spanQuantidadeDisponivel.textContent = `Disponível: ${quantidade}`;
     }else{
-      this.btnCadastrarProdutospanQuantidadeDisponivel.textContent = `Disponível: 0`;
+      this.spanQuantidadeDisponivel.textContent = `Disponível: 0`;
     }
     
   }
