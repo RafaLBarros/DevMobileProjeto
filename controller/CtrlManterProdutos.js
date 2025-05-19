@@ -57,6 +57,10 @@ export default class CtrlManterProdutos {
     async iniciarRegistrarSaida(produtoId,quantidade){
       let uid = localStorage.getItem("uid");
       let produto = await this.#dao.obterProdutoPeloProdutoId(produtoId,uid);
+      if(quantidade < 0){
+        alert("Quantidade não pode ser negativa!")
+        return;
+      }
       let novoEstoque = produto.getQuantidade() - quantidade;
       if(novoEstoque < 0){
         alert("Quantidade Insuficiente em Estoque")
