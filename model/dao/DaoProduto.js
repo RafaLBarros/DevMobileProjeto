@@ -136,7 +136,9 @@ export default class DaoProduto {
 
   async incluir(produto,usuarioUid) {
     // Recuperando a conexão com o Realtime Database
-    let connectionDB = await this.obterConexao();    
+    let connectionDB = await this.obterConexao();
+    console.log(usuarioUid);
+    console.log(connectionDB);    
     // Retornamos uma Promise que nos informará se a inclusão foi realizada ou não
     return new Promise( (resolve, reject) => {
       // Monto a 'ref' para a entrada 'produtos' para a inclusão

@@ -1,9 +1,5 @@
 "use strict";
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-import { getAuth, signInWithRedirect, signInWithPopup, browserSessionPersistence, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
-import { getDatabase, ref, query, onValue, onChildAdded, orderByChild, orderByKey, equalTo, get, set } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
-
 import CtrlManterProdutos from "/controller/CtrlManterProdutos.js";
 import Status from "/model/Status.js";
 import CtrlManterUsuario from "/controller/CtrlManterUsuario.js"
@@ -11,24 +7,10 @@ import CtrlManterListas from "/controller/CtrlManterListas.js"
 import CtrlCopiarListas from "/controller/CtrlCopiarListas.js"
 import CtrlCompartilharListas from "/controller/CtrlCompartilharListas.js"
 
-const swal = new Function("json,th", "swal(json).then(th)");
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAlgaQN8Oq7tsS6UhymWriTzTga1qmg-ZI",
-  authDomain: "rlb-lasalle-firebase.firebaseapp.com",
-  databaseURL: "https://rlb-lasalle-firebase-default-rtdb.firebaseio.com",
-  projectId: "rlb-lasalle-firebase",
-  storageBucket: "rlb-lasalle-firebase.firebasestorage.app",
-  messagingSenderId: "488497251520",
-  appId: "1:488497251520:web:32e3bf3f71040ef1c69925",
-  measurementId: "G-DMLGRWXSP9"
-};
-
-const app = initializeApp(firebaseConfig);
 
 export default class CtrlSessao {
   
-  #daoUsuario;
   
   //-----------------------------------------------------------------------------------------//  
   constructor() {   

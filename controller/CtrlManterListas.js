@@ -108,7 +108,7 @@ export default class CtrlManterLista {
       // Cria o novo item
       let novoItem = {
         produtoId: produtoId,
-        quantidade: quantidade,
+        quantidade: parseInt(quantidade,10),
         concluido: false
       };
 

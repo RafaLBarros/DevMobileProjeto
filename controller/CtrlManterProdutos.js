@@ -38,7 +38,7 @@ export default class CtrlManterProdutos {
           try {
             let uid = localStorage.getItem("uid");
             let dataCadastro = new Date().toLocaleDateString('pt-BR');
-            let produto = new Produto(nome, quantidade,estoqueMin,dataCadastro);
+            let produto = new Produto(nome, parseInt(quantidade,10),parseInt(estoqueMin,10),dataCadastro);
             await this.#dao.incluir(produto,uid); 
             this.#status = Status.NAVEGANDO;
             this.#atualizarContextoNavegacao();

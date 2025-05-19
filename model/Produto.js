@@ -42,10 +42,9 @@ export default class Produto {
         this.quantidade = quantidade;
     }
     static validarQuantidade(quantidade){
-        if(quantidade == null || quantidade == "" || quantidade == undefined)
-            throw new ModelError("A quantidade não pode ser nula!");
-        let quantidadeInt = parseInt(quantidade);
-        if(quantidadeInt < 0)
+        if(quantidade === null || quantidade === "" || quantidade === undefined)
+            throw new ModelError("A quantidade não pode ser nula!");;
+        if(quantidade < 0)
             throw new ModelError("A quantidade deve ser no mínimo 0!");
         const padraoQuantidade = /^[0-9]+$/;
         if (!padraoQuantidade.test(quantidade)) 
@@ -60,7 +59,7 @@ export default class Produto {
         this.estoqueMin = estoqueMin;
     }
     static validarEstoqueMin(estoqueMin){
-        if(estoqueMin == null || estoqueMin == "" || estoqueMin == undefined)
+        if(estoqueMin === null || estoqueMin === "" || estoqueMin === undefined)
             throw new ModelError("O Estoque Mínimo não pode ser nulo!");
         let estoqueMinInt = parseInt(estoqueMin);
         if(estoqueMinInt < 0)

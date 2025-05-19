@@ -4,12 +4,12 @@
 // de outra classe. No arquivo referenciado após o 'from' é necessário informar o que
 // para a ser visível para a classe que utiliza o import. Para isso, lá colocamos a 
 // indicação 'export'
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
 import { getDatabase, ref, query, onValue, onChildAdded, orderByChild, 
         child, orderByKey, equalTo, get, set, remove, push, runTransaction } 
   from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 
-import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
 
 // Importamos a definição da classe Usuario
 import Usuario from "/model/Usuario.js";
@@ -29,6 +29,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getDatabase(app);
 
 /*
  * DAO --> Data Access Object
@@ -62,7 +63,7 @@ export default class DaoUsuario {
     // para acessá-lo
     if(DaoUsuario.promessaConexao == null) {
       DaoUsuario.promessaConexao = new Promise(function(resolve, reject) {
-        const db = getDatabase();
+        const db = getDatabase(app);
         if(db)
             resolve(db);
         else 
@@ -107,7 +108,6 @@ export default class DaoUsuario {
         .then((userCredential) => {
             console.log("Usuário cadastrado:", userCredential.user);
             // Salvar o nome e email do usuário no Realtime Database
-            const db = getDatabase();
             const userRef = ref(db, 'users/' + userCredential.user.uid);
             set(userRef, {
                 nome: usuario.getNome(),
