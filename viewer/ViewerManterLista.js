@@ -1,3 +1,4 @@
+import ViewerError from "/viewer/ViewerError.js";
 //------------------------------------------------------------------------//
 
 export default class ViewerManterLista {
@@ -18,9 +19,10 @@ export default class ViewerManterLista {
       this.btnAdicionarItemCad = this.obterElemento('btnAdicionarItemCad');
       this.btnCadastrarLista = this.obterElemento('btnCadastrarLista');
       this.btnAdicionarProduto = this.obterElemento('btnAdicionarProduto');
-      this.btnSalvarLista = this.obterElemento('btnSalvarLista');
+      this.btnFinalizarLista = this.obterElemento('btnFinalizarLista');
       this.btnAdicionarItemCon = this.obterElemento('btnAdicionarItemCon');
       this.btnCancelarItem = this.obterElemento('btnCancelarItem');
+      this.btnRemoverLista = this.obterElemento('btnRemoverLista');
 
       this.selectConsultarLista = this.obterElemento('selectConsultarLista');
       this.selectProduto = this.obterElemento('selecionarProduto');
@@ -32,9 +34,10 @@ export default class ViewerManterLista {
       this.btnAdicionarItemCad.onclick = fnBtnAdicionarItemCad;
       this.btnCadastrarLista.onclick = fnBtnCadastrarLista;
       this.btnAdicionarProduto.onclick = fnBtnAdicionarProduto;
-      this.btnSalvarLista.onclick = fnBtnSalvarLista;
+      this.btnFinalizarLista.onclick = fnBtnFinalizarLista;
       this.btnAdicionarItemCon.onclick = fnBtnAdicionarItemCon;
       this.btnCancelarItem.onclick = fnBtnCancelarItem; 
+      this.btnRemoverLista.onclick = fnBtnRemoverLista;
 
       this.selectConsultarLista.onchange = fnSelectConsultarLista;
     }
@@ -81,6 +84,8 @@ export default class ViewerManterLista {
     location.href = 'manterLista.html#init';
     this.divConsultarLista.style.display = 'block';
     this.divCadastrarLista.style.display = 'none';
+    this.selectConsultarLista.innerHTML = `<option value="">Selecione uma lista</option>`;
+    this.divDetalhesLista.style.display = 'none';
     for(let lista of conjListas){
       const opt = document.createElement("option");
       opt.value = lista.getListaId()
@@ -94,9 +99,11 @@ export default class ViewerManterLista {
     this.divCadastrarLista.style.display = 'block';
 
   }
-  exibirDetalhesLista(mapa){
+  exibirDetalhesLista(mapa,listaId,listaStatus){
     let div = this.divDetalhesLista;
+    div.style.display = 'inline-block';
     div.innerHTML = "";
+    let finalizada = listaStatus === "finalizada";
     let html = `
       <table class="lista-table">
         <thead>
@@ -107,7 +114,6 @@ export default class ViewerManterLista {
 
     for (let item of mapa){
       let nomeProd = item.nome;
-      let finalizada = item.status === "finalizada";
       html += `
         <tr>
           <td>${nomeProd}</td>
@@ -116,7 +122,7 @@ export default class ViewerManterLista {
             <input
               type="checkbox"
               class="concluido-checkbox"
-              data-item-key="${item.produtoId}"
+              data-item-key="${item.itemId}"
               ${item.status ? "checked" : ""}
               ${finalizada ? "disabled" : ""}>
           </td>
@@ -128,6 +134,51 @@ export default class ViewerManterLista {
       </table>
     `;
     div.innerHTML = html;
+
+    if (finalizada) {
+      this.btnRemoverLista.style.display = "none";
+      this.btnAdicionarProduto.style.display = "none";
+      this.btnFinalizarLista.style.display = "none";
+      this.divProdutoForm.style.display = "none";
+    } else {
+      this.btnRemoverLista.style.display = "inline-block";
+      this.btnAdicionarProduto.style.display = "inline-block";
+      this.btnFinalizarLista.style.display = "inline-block";
+      this.divDetalhesLista.querySelectorAll(".concluido-checkbox").forEach(cb => {
+        cb.addEventListener("change", async e => {
+          let marcado = e.target.checked;
+          let itemKey = e.target.dataset.itemKey;
+          this.getCtrl().atualizarCheckItem(itemKey,marcado,listaId)
+        });
+      });
+    }
+    
+  }
+
+  atualizarAdicionarProduto(conjProdutos){
+    this.selectProduto.innerHTML = `<option value="">Selecione um produto</option>`;
+    for(let produto of conjProdutos){
+      let o = document.createElement("option");
+      o.value = produto.getProdutoId();
+      o.textContent = produto.getNome();
+      this.selectProduto.appendChild(o);
+    }
+    this.divProdutoForm.style.display = "block";
+  }
+
+  finalizarApresentacao(){
+    this.divDetalhesLista.innerHTML = "<p>Compra finalizada.</p>";
+    this.btnAdicionarItemCon.style.display = this.btnFinalizarLista.style.display = "none";
+    this.btnRemoverLista.style.display = "none";
+    esconderForm();
+  }
+
+  atualizarListaRemovida(){
+    alert("Lista Remova!")
+    this.divDetalhesLista.innerHTML = "";
+    this.btnAdicionarProduto.style.display = "none";
+    this.btnFinalizarLista.style.display = "none";
+    this.btnRemoverLista.style.display = "none";
   }
 
 }
@@ -243,24 +294,31 @@ function fnBtnCadastrarLista() {
 }
 
 function fnBtnAdicionarProduto() {
-    // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
-    // no botão para poder executar a instrução abaixo.
-    this.viewer.getCtrl().iniciarAdicionarProduto();
-    
+
+  this.viewer.getCtrl().iniciarAdicionarProduto();
+
 }
 
-function fnBtnSalvarLista() {
+function fnBtnFinalizarLista() {
     // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
     // no botão para poder executar a instrução abaixo.
-    this.viewer.getCtrl().mapearProdutosItens("-OQQGvTZCD-mCB4nTfGD");
-    //this.viewer.getCtrl().iniciarSalvarLista();
+    if (!confirm("Deseja finalizar a compra?")) return;
+    let listaId = this.viewer.selectConsultarLista.value;
+    this.viewer.getCtrl().iniciarFinalizarLista(listaId);
     
 }
 
 function fnBtnAdicionarItemCon() {
     // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
     // no botão para poder executar a instrução abaixo.
-    this.viewer.getCtrl().iniciarAdicionarItemCon();
+    let produtoId = this.viewer.selectProduto.value;
+    let quantidade = parseInt(this.viewer.inputQuantidade.value, 10);
+    if (!produtoId || isNaN(quantidade) || quantidade < 1) {
+    alert("Preencha corretamente os campos.");
+    return;
+    }
+    let listaId = this.viewer.selectConsultarLista.value;
+    this.viewer.getCtrl().iniciarAdicionarItemCon(listaId,produtoId,quantidade);
     
 }
 
@@ -270,6 +328,15 @@ function fnBtnCancelarItem() {
     this.viewer.getCtrl().iniciarCancelarItem();
     
 }
+
+function fnBtnRemoverLista() {
+    if (!confirm("Deseja realmente remover esta lista?")) return;
+    let listaId = this.viewer.selectConsultarLista.value;
+    this.viewer.getCtrl().iniciarRemoverLista(listaId);
+    
+}
+
+
 function fnSelectConsultarLista(){
   let listaId = this.viewer.selectConsultarLista.value;
   this.viewer.getCtrl().iniciarDetalhesLista(listaId);

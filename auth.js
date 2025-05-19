@@ -1,6 +1,6 @@
 // auth-check.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 // Your Firebase configuration
 const firebaseConfig = {
@@ -38,6 +38,39 @@ function checkAuth() {
                 console.log("Nome do usuário não encontrado no localStorage.");
             }
         }
+    });
+}
+function logout() {
+    signOut(auth)
+        .then(() => {
+            console.log("Usuário deslogado");
+            alert("Logout realizado com sucesso!");
+        })
+        .catch((error) => {
+            console.error("Erro no logout:", error.message);
+        });
+}
+
+function menu() {
+    var x = document.getElementById("myLinks");
+    if (x.style.display === "block") {
+      x.style.display = "none";
+    } else {
+      x.style.display = "block";
+    }
+  }
+
+    // Botão de Logout
+const btnLogout = document.getElementById("btnLogout");
+if (btnLogout) {
+    btnLogout.addEventListener("click", () => {
+        logout();
+    });
+}
+const fafabars = document.getElementById("fafabars");
+if (fafabars) {
+    fafabars.addEventListener("click", () => {
+         menu();
     });
 }
 

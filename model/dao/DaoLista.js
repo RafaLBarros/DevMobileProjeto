@@ -1,5 +1,5 @@
 import { getDatabase, ref, query, onValue, onChildAdded, orderByChild, 
-    child, orderByKey, equalTo, get, set, remove, push, runTransaction } 
+    child, orderByKey, equalTo, get, set, remove, push, runTransaction, update} 
 from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 
 import Lista from "/model/Lista.js";
@@ -44,6 +44,7 @@ export default class DaoLista {
       resultPromise.then(dataSnapshot => {
         // Pego o valor (objeto) da consulta
         let listaSnap = dataSnapshot.val();
+        console.log(listaSnap);
         // Se há algum objeto no Firebase dado como resposta
         if(listaSnap != null) {
           // Instancio um objeto Lista a partir do val()
@@ -87,13 +88,13 @@ export default class DaoLista {
     });
   }
 
-  async alterar(lista,usuario) {
+  async alterar(lista,usuarioUid) {
     // Recuperando a conexão com o Realtime Database
     let connectionDB = await this.obterConexao();    
     // Retornamos uma Promise que nos informará se a alteração foi realizada ou não
     return new Promise( (resolve, reject) => {
       // Monto a 'ref' para a entrada 'listas' para a alteração
-      let dbRefListas = ref(connectionDB,'users/'+usuario.getUid()+'listas/');
+      let dbRefListas = ref(connectionDB,`users/${usuarioUid}/listas`);
       // Inicio uma transação
       runTransaction(dbRefListas, (listas) => {       
         // Monto um child de 'cursos', onde vamos colocar a alteração do . Esse filho 
@@ -108,14 +109,23 @@ export default class DaoLista {
       });
     });
   }
+  async alterarCheckItem(usuarioUid,itemKey,marcado,listaId){
+    // Recuperando a conexão com o Realtime Database
+    let connectionDB = await this.obterConexao(); 
+    return new Promise( (resolve, reject) => {
+      let dbRefItem = ref(connectionDB, `users/${usuarioUid}/listas/${listaId}/itens/${itemKey}`);
+      let setPromise = update(dbRefItem,{ concluido: marcado });
+      setPromise.then( value => {resolve(true)}).catch((e) => {console.log("#ERRO: " + e);resolve(false);});
+    })
+  }
 
-  async excluir(lista,usuario) {
+  async excluir(lista,usuarioUid) {
     // Recuperando a conexão com o Realtime Database
     let connectionDB = await this.obterConexao();    
     // Retornamos uma Promise que nos informará se a exclusão foi realizada ou não
     return new Promise( (resolve, reject) => {
       // Monto a 'ref' para a entrada 'listas' para a exclusão
-      let dbRefListas = ref(connectionDB,'users/'+usuario.getUid()+'listas/');
+      let dbRefListas = ref(connectionDB,`users/${usuarioUid}/listas`);
       // Inicio uma transação
       runTransaction(dbRefListas, (listas) => {       
         // Monto um child de 'listas', onde vamos promover a exclusão do lista. Esse filho 

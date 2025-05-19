@@ -92,6 +92,7 @@ export default class DaoUsuario {
         if(usr != null) 
           // Crio um objeto Usuario a partir do objeto JSON retornado por val().
           resolve(new Usuario(usr.nome, usr.email));
+          
         else
           // Retorno nul se o val() também for nulo.
           resolve(null);
@@ -152,4 +153,99 @@ export default class DaoUsuario {
     return resultado;
   }
   //-----------------------------------------------------------------------------------------//
+
+  async emailToUid(usuarioUid,emailKey){
+    let connectionDB = await this.obterConexao();    
+    let resultado = new Promise( (resolve, reject) => {   
+      let dbRefEmail = ref(connectionDB,`emailToUid/${emailKey}`);
+      let setPromise = set(dbRefEmail, usuarioUid);
+      setPromise.then( value => {resolve(true)},  erro => {reject(erro)});
+    });
+    return resultado;
+  }
+  async obterConvidado(chaveConvidado){
+    let connectionDB = await this.obterConexao();          
+    return new Promise((resolve) => {
+      // Monto uma referência para o objeto que desejo recuperar
+      let dbRefUsuario = ref(connectionDB,`emailToUid/${chaveConvidado}`);
+      // Monto a consulta a partir da referência
+      let consulta = query(dbRefUsuario);
+      // Executo a consulta. Ela devolve uma Promise
+      let resultPromise = get(consulta);
+      resultPromise.then(dataSnapshot => {
+        let usr = dataSnapshot.val();
+        if(usr != null) 
+          resolve(usr);     
+        else
+          resolve(null);
+      });
+    });
+  }
+  async compartilharDono(uid,convidadoId,listaId){
+    let connectionDB = await this.obterConexao();          
+    return new Promise( (resolve, reject) => {
+
+      let dbRefUsuarios = ref(connectionDB,`users/${uid}/listas/${listaId}/convidados/${convidadoId}`);
+
+      runTransaction(dbRefUsuarios, (users) => {       
+
+        let setPromise = set(dbRefUsuarios,true);
+
+        setPromise
+          .then( value => {resolve(true)})
+          .catch((e) => {console.log("#ERRO: " + e);resolve(false);});
+      });
+    });
+  }
+  async compartilharConvidado(uid,convidadoId,listaId){
+    let connectionDB = await this.obterConexao();          
+    return new Promise( (resolve, reject) => {
+
+      let dbRefUsuarios = ref(connectionDB,`sharedListsForUser/${convidadoId}/${uid}/${listaId}`);
+
+      runTransaction(dbRefUsuarios, (users) => {       
+
+        let setPromise = set(dbRefUsuarios,true);
+
+        setPromise
+          .then( value => {resolve(true)})
+          .catch((e) => {console.log("#ERRO: " + e);resolve(false);});
+      });
+    });
+  }
+  async obterListasCompartilhadas(uid) {
+    let db = await this.obterConexao();
+    const resultado = {};
+
+    const sharedSnap = await get(ref(db, `sharedListsForUser/${uid}`));
+    console.log(`sharedListsForUser/${uid}`);
+    if (!sharedSnap.exists()){
+      console.log("Não encontrei listas compartilhadas");
+      return resultado;
+    }
+    const promises = [];
+
+    sharedSnap.forEach(donoSnap => {
+      const donoId = donoSnap.key;
+      const listasObj = donoSnap.val();
+
+      for (const listaId in listasObj) {
+        const caminhoNome = `users/${donoId}/listas/${listaId}/nome`;
+        const p = get(ref(db, caminhoNome))
+          .then(nameSnap => {
+            const nomeLista = nameSnap.exists() ? nameSnap.val() : listaId;
+            resultado[`${donoId}/${listaId}`] = nomeLista;
+          })
+          .catch(err => {
+            console.warn(`Erro ao buscar nome da lista ${listaId}:`, err);
+            resultado[`${donoId}/${listaId}`] = listaId; // fallback
+          });
+
+        promises.push(p);
+      }
+    });
+
+    await Promise.all(promises);
+    return resultado;
+  }
 }

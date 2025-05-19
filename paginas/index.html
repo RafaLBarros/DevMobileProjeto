@@ -22,14 +22,12 @@
         <span class="badge">3</span>
       </a>
 
-      <a href="javascript:void(0);" class="icon" onclick="menu()">
+      <a href="javascript:void(0);" class="icon" id = "fafabars">
         <i class="fa fa-bars"></i>
       </a>
 
       <div id="myLinks">
-        <a onclick="window.location.href='cadastrar_produto.html'">Cadastrar Produtos</a>
-        <a onclick="window.location.href='estoque.html'">Estoque</a>
-        <a href="#">Sair</a>
+        <a href="#" id="btnLogout">Sair</a>
       </div>
     </div>
 
@@ -53,11 +51,11 @@
         <img src="/Imagens/armazem.png" alt="Estoque">
         Estoque
       </button>
-      <button class="btn" id = "btnRegistrarSaídas" onclick="window.location.href='manterLista.html'">
+      <button class="btn" id = "btnRegistrarSaídas" onclick="window.location.href='manterProduto.html#saida'">
         <img src="/Imagens/teste.png" alt="Resigtrar Saídas">
         Registrar Saídas
       </button>
-      <button class="btn" id = "btnCompartilharLista" onclick="window.location.href='compartilharLista.html'">
+      <button class="btn" id = "btnCompartilharLista" onclick="window.location.href='compartilharLista.html#compartilhar'">
         <img src="/Imagens/conhecimento.png" alt="Compartilhar Lista">
         Compartilhar Lista
       </button>

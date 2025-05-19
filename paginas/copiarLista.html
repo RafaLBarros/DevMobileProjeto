@@ -23,14 +23,12 @@
                 <span class="badge">3</span>
             </a>
 
-            <a href="javascript:void(0);" class="icon">
+            <a href="javascript:void(0);" class="icon" id = "fafabars">
                 <i class="fa fa-bars"></i>
             </a>
 
             <div id="myLinks">
-                <a href="cadastrar_produto.html">Cadastrar Produtos</a>
-                <a href="#">Estoque</a>
-                <a href="#">Sair</a>
+                <a href="#" id="btnLogout">Sair</a>
             </div>
         </div>
 
@@ -43,13 +41,13 @@
                 </div>
                 <div class="search-container" style="display:block;">
                     <label for="selectListas" style="display:block; margin-bottom:8px;">Selecione uma lista:</label>
-                    <select id="selectListas" style="width:100%;">
+                    <select id="selectCopiarListas" style="width:100%;">
                         <option value="">-- Escolha uma lista --</option>
                     </select>
                 </div>
 
                 <div class="button-container full-width">
-                    <button id="copiarListaBtn" class="btn-login" style="display:none; width:80%; max-width:200px;">Copiar Lista</button>
+                    <button id="btnCopiarLista" class="btn-login" style="display:none; width:80%; max-width:200px;">Copiar Lista</button>
                 </div>
             </div>
         </div>
@@ -59,7 +57,7 @@
         <p>© 2025 GHEmpresas - Todos os direitos reservados.</p>
     </footer>
 
-   <!-- <script type="module" src="/js/cadastrar_produto.js"></script>  --> <!-- AQUI SERA ADICIONADO O SCRIPT DO CTRL SESSÃO-->
+   <script type="module" src="/controller/CtrlSessao.js"></script>
 </body>
 
 </html>

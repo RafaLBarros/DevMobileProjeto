@@ -6,7 +6,7 @@ export default class Lista {
         this.setNome(nome);
         this.setData(data);
         if(status === undefined || status === null)
-            this.setStatus("CRIADA"); //Colocar depois o status correto, não sei qual era e coloquei CRIADA. : Rafael
+            this.setStatus("criada"); //Colocar depois o status correto, não sei qual era e coloquei criada. : Rafael
           else
             this.setStatus(status);
     }

@@ -13,21 +13,30 @@ export default class ViewerManterProduto {
 
       this.divCadastrarProduto = this.obterElemento('divCadastrarProduto');
       this.divEstoqueProduto = this.obterElemento('divEstoqueProduto');
-
+      this.divSaidaProduto = this.obterElemento('divSaidaProduto');
       this.formProduto = this.obterElemento('formProduto');
 
       this.inputNomeProduto = this.obterElemento('inputNomeProduto');
       this.inputEstoqueProduto = this.obterElemento('inputEstoqueProduto');
       this.inputMinimoProduto = this.obterElemento('inputMinimoProduto');
       this.inputPesquisarProduto = this.obterElemento('inputPesquisarProduto');
+      this.inputQuantidadeSaida = this.obterElemento('inputQuantidadeSaida');
 
       this.btnCadastrarProduto = this.obterElemento('btnCadastrarProduto');
       this.btnFiltrarProduto = this.obterElemento('btnFiltrarProduto');
+      this.btnRegistrarSaida = this.obterElemento('btnRegistrarSaida');
 
       this.tabelaEstoqueProduto = this.obterElemento('tabelaEstoqueProduto');
 
+      this.selectSaidaProduto = this.obterElemento('selectSaidaProduto');
+
+      this.spanQuantidadeDisponivel = this.obterElemento('spanQuantidadeDisponivel');
+
       this.btnCadastrarProduto.onclick = fnBtnCadastrarProduto;
       this.btnFiltrarProduto.onclick = fnBtnFiltrarProduto;
+      this.btnRegistrarSaida.onclick = fnBtnRegistrarSaida;
+
+      this.selectSaidaProduto.onchange = fnSelectSaidaProduto;
 
     }
   
@@ -50,9 +59,11 @@ export default class ViewerManterProduto {
   }
 
   statusApresentacao(conjProdutos) {
+    this.ocultarTodasAsDivs();
     location.href = 'manterProduto.html#estoque';
     this.divEstoqueProduto.style.display = 'block';
     this.divCadastrarProduto.style.display = 'none';
+    this.divSaidaProduto.style.display = 'none';
     this.tabelaEstoqueProduto.innerHTML = '';
     for(let produto of conjProdutos){
       const row = `
@@ -68,8 +79,45 @@ export default class ViewerManterProduto {
     location.href = 'manterProduto.html#cadastro';
     this.divEstoqueProduto.style.display = 'none';
     this.divCadastrarProduto.style.display = 'block';
+    this.divSaidaProduto.style.display = 'none';
 
   }
+
+  statusExclusao(conjProdutos){
+    this.ocultarTodasAsDivs();
+    location.href = 'manterProduto.html#saida';
+    this.divEstoqueProduto.style.display = 'none';
+    this.divCadastrarProduto.style.display = 'none';
+    this.divSaidaProduto.style.display = 'block';
+
+    for(let produto of conjProdutos){
+      let option = document.createElement("option");
+      option.value = produto.getProdutoId();
+      option.textContent = produto.getNome();
+      this.selectSaidaProduto.appendChild(option);
+    }
+
+    if (this.selectSaidaProduto.value) {
+      this.exibirQuantidadeDisponivel(this.selectSaidaProduto.value);
+    }
+  }
+
+  async exibirQuantidadeDisponivel(produtoId){
+    let quantidade = await this.#ctrl.obterQuantidadeAtual(produtoId);
+    if(quantidade){
+      this.spanQuantidadeDisponivel.textContent = `Disponível: ${quantidade}`;
+    }else{
+      this.btnCadastrarProdutospanQuantidadeDisponivel.textContent = `Disponível: 0`;
+    }
+    
+  }
+
+  ocultarTodasAsDivs() {
+  this.divCadastrarProduto.style.display = 'none';
+  this.divEstoqueProduto.style.display = 'none';
+  this.divSaidaProduto.style.display = 'none';
+  }
+
 
 
 
@@ -91,5 +139,17 @@ function fnBtnFiltrarProduto() {
     // no botão para poder executar a instrução abaixo.
     this.viewer.getCtrl().iniciarFiltrarProduto();
     
+}
+
+function fnSelectSaidaProduto() {
+  let produtoId = this.viewer.selectSaidaProduto.value;
+  this.viewer.exibirQuantidadeDisponivel(produtoId);
+}
+
+function fnBtnRegistrarSaida() {
+  event.preventDefault();
+  let produtoId = this.viewer.selectSaidaProduto.value;
+  let quantidade = parseInt(this.viewer.inputQuantidadeSaida.value);
+  this.viewer.getCtrl().iniciarRegistrarSaida(produtoId,quantidade);
 }
 

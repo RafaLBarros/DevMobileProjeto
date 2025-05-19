@@ -15,12 +15,20 @@ export default class CtrlManterProdutos {
     }
 
     async #atualizarContextoNavegacao(){
+      console.log("Atualizando navegação com status:", this.#status);
         if(this.#status == Status.NAVEGANDO){
+            console.log("Entrei no if navegando");
             let uid = localStorage.getItem("uid");
             let conjProdutos = await this.#dao.obterProdutos(uid);
             this.#viewer.statusApresentacao(conjProdutos);
         }else if(this.#status == Status.INCLUINDO){
+            console.log("Entrei no if incluindo");
             this.#viewer.statusInclusao();
+        }else if(this.#status == Status.EXCLUINDO){
+            console.log("Entrei no if excluindo");
+            let uid = localStorage.getItem("uid");
+            let conjProdutos = await this.#dao.obterProdutos(uid);
+            this.#viewer.statusExclusao(conjProdutos);
         }
     }
 
@@ -40,5 +48,24 @@ export default class CtrlManterProdutos {
           }
         }    
       }
+    async obterQuantidadeAtual(produtoId){
+      let uid = localStorage.getItem("uid");
+      let produto = await this.#dao.obterProdutoPeloProdutoId(produtoId,uid);
+      return produto.getQuantidade();
+    }
+
+    async iniciarRegistrarSaida(produtoId,quantidade){
+      let uid = localStorage.getItem("uid");
+      let produto = await this.#dao.obterProdutoPeloProdutoId(produtoId,uid);
+      let novoEstoque = produto.getQuantidade() - quantidade;
+      if(novoEstoque < 0){
+        alert("Quantidade Insuficiente em Estoque")
+        return
+      }
+      let novoProduto = new Produto(produto.getNome(),novoEstoque,produto.getEstoqueMin(),produto.getDataCadastro());
+      novoProduto.setProdutoId(produto.getProdutoId());
+      await this.#dao.alterar(novoProduto,uid);
+      this.#viewer.exibirQuantidadeDisponivel(novoProduto.getProdutoId());
+    }
 
 }

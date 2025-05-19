@@ -23,10 +23,12 @@
                 <span class="badge">3</span>
             </a>
 
-            <a class="icon">
+            <a href="javascript:void(0);" class="icon" id = "fafabars">
                 <i class="fa fa-bars"></i>
             </a>
-
+            <div id="myLinks">
+                <a href="#" id="btnLogout">Sair</a>
+            </div>
         </div>
 
         <!--DIV DO CADASTRO DE PRODUTO-->
@@ -74,6 +76,30 @@
                     <tbody>
                         </tbody>
                 </table>
+            </div>
+        </div>
+        <!--DIV DE SAIDA DE PRODUTOS-->
+        <div class = "divdinamica" id = "divSaidaProduto" style = "display:none">
+            <div class="container">
+                <div class="header">
+                    <a href="index.html" class="back-btn"><i class="fa fa-arrow-left"></i></a>
+                    <h2>Saída de Produto</h2>
+                </div>
+
+                <form id="formSaidaProduto">
+                    <label for="produto">Produto:</label>
+                    <select id="selectSaidaProduto"></select>
+
+                    <div class="disponibilidade-container">
+                        <span id="spanQuantidadeDisponivel"></span>
+                        <label for="quantidade">Quantidade:</label>
+                        <div class="quantidade-wrapper">
+                            <input type="number" id="inputQuantidadeSaida" value="1" min="1">
+                        </div>
+                    </div>
+
+                    <button type="submit" id="btnRegistrarSaida" class="btn-login">Registrar Saída</button>
+                </form>
             </div>
         </div>
     </div>
