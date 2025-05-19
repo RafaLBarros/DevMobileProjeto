@@ -29,7 +29,7 @@ export default class Produto {
           throw new ModelError("Nome do Produto não pode ser Nulo!");
         if (nome.length > 20) 
           throw new ModelError("Nome do Produto deve ter até 20 caracteres!");
-        const padraoNome = /[A-Z][a-z] */;
+        const padraoNome = /^[A-Za-zÀ-ÖØ-öø-ÿÇç\s]+$/;
         if (!padraoNome.test(nome)) 
           throw new ModelError("Nome do Produto só pode conter letras!");
     }
